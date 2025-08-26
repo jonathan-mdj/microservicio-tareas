@@ -2,6 +2,8 @@
 .env.production
 .env.local
 .env.dev
+.env
+.env.atlas
 
 # Archivos de Python adicionales
 *.egg-info/
@@ -15,10 +17,19 @@ var/
 wheels/
 build/
 develop-eggs/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
 
 # Logs y archivos temporales de Angular
 *.log
 .angular/
+logs/
 
 # Archivos de sistema
 Thumbs.db
