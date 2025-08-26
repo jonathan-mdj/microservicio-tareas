@@ -1,0 +1,205 @@
+<div class="graficas-container">
+  <div class="header">
+    <div class="header-content">
+      <div class="header-text">
+        <h1>📊 Dashboard de Logs del Sistema</h1>
+        <p>Monitoreo en tiempo real de todas las APIs y servicios del backend</p>
+      </div>
+      <div class="header-actions">
+        <p-button 
+          label="🔄 Actualizar" 
+          icon="pi pi-refresh" 
+          severity="info"
+          [loading]="isLoading"
+          (onClick)="refreshData()">
+        </p-button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filtros -->
+  <div class="filters-section">
+    <p-card>
+      <div class="filters-grid">
+        <div class="filter-item">
+          <label>Servicio:</label>
+          <p-dropdown 
+            [(ngModel)]="selectedService" 
+            [options]="['', 'auth-service', 'user-service', 'task-service', 'api-gateway']"
+            placeholder="Todos los servicios"
+            (onChange)="applyFilters()">
+          </p-dropdown>
+        </div>
+        
+        <div class="filter-item">
+          <label>Estado:</label>
+          <p-dropdown 
+            [(ngModel)]="selectedStatus" 
+            [options]="['', 'Éxito (2xx)', 'Error Cliente (4xx)', 'Error Servidor (5xx)']"
+            placeholder="Todos los estados"
+            (onChange)="applyFilters()">
+          </p-dropdown>
+        </div>
+        
+        <div class="filter-item">
+          <label>Rango de fechas:</label>
+          <p-calendar 
+            [(ngModel)]="dateRange" 
+            selectionMode="range" 
+            placeholder="Seleccionar fechas"
+            (onSelect)="applyFilters()">
+          </p-calendar>
+        </div>
+        
+        <div class="filter-item">
+          <p-button 
+            label="Limpiar Filtros" 
+            icon="pi pi-refresh" 
+            severity="secondary"
+            (onClick)="clearFilters()">
+          </p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Estadísticas generales -->
+  <div class="stats-section">
+    <div class="stats-grid">
+      <p-card class="stat-card">
+        <div class="stat-content">
+          <div class="stat-icon">📈</div>
+          <div class="stat-info">
+            <h3>{{ logStats?.total_requests || 0 }}</h3>
+            <p>Total de Peticiones</p>
+          </div>
+        </div>
+      </p-card>
+      
+      <p-card class="stat-card">
+        <div class="stat-content">
+          <div class="stat-icon">⚡</div>
+          <div class="stat-info">
+            <h3>{{ (logStats?.average_response_time ?? 0) | number:'1.0-0' }}ms</h3>
+            <p>Tiempo Promedio de Respuesta</p>
+          </div>
+        </div>
+      </p-card>
+      
+      <p-card class="stat-card">
+        <div class="stat-content">
+          <div class="stat-icon">✅</div>
+          <div class="stat-info">
+            <h3>{{ (logStats?.success_rate ?? 0) | number:'1.0-1' }}%</h3>
+            <p>Tasa de Éxito</p>
+          </div>
+        </div>
+      </p-card>
+      
+      <p-card class="stat-card">
+        <div class="stat-content">
+          <div class="stat-icon">🕒</div>
+          <div class="stat-info">
+            <h3>{{ logs.length }}</h3>
+            <p>Logs en Memoria</p>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Gráficas -->
+  <div class="charts-section">
+    <div class="charts-grid">
+      <!-- Gráfica de servicios -->
+      <p-card header="📊 Peticiones por Servicio" class="chart-card">
+        <p-chart 
+          type="doughnut" 
+          [data]="serviceChartData" 
+          [options]="chartOptions"
+          [style]="{'height': '300px'}">
+        </p-chart>
+      </p-card>
+      
+      <!-- Gráfica de códigos de estado -->
+      <p-card header="🔍 Distribución de Códigos de Estado" class="chart-card">
+        <p-chart 
+          type="pie" 
+          [data]="statusChartData" 
+          [options]="chartOptions"
+          [style]="{'height': '300px'}">
+        </p-chart>
+      </p-card>
+      
+      <!-- Gráfica de tiempo por hora -->
+      <p-card header="⏰ Peticiones por Hora" class="chart-card">
+        <p-chart 
+          type="line" 
+          [data]="timeChartData" 
+          [options]="chartOptions"
+          [style]="{'height': '300px'}">
+        </p-chart>
+      </p-card>
+      
+      <!-- Gráfica de tiempo de respuesta -->
+      <p-card header="🚀 Tiempo de Respuesta (Últimas 20 peticiones)" class="chart-card">
+        <p-chart 
+          type="line" 
+          [data]="responseTimeChartData" 
+          [options]="chartOptions"
+          [style]="{'height': '300px'}">
+        </p-chart>
+      </p-card>
+    </div>
+  </div>
+
+  <!-- Tabla de logs recientes -->
+  <div class="logs-section">
+    <p-card header="📋 Logs Recientes">
+      <div class="table-container">
+        <table class="logs-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Servicio</th>
+              <th>Endpoint</th>
+              <th>Método</th>
+              <th>Status</th>
+              <th>Response Time</th>
+              <th>Usuario</th>
+              <th>IP</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let log of logs.slice(0, 10)">
+              <td>{{ log.timestamp | date:'short' }}</td>
+              <td>
+                <span class="service-badge">{{ log.service }}</span>
+              </td>
+              <td>{{ log.endpoint }}</td>
+              <td>
+                <span class="method-badge method-{{ log.method.toLowerCase() }}">
+                  {{ log.method }}
+                </span>
+              </td>
+              <td>
+                <span class="status-badge" [style.background-color]="getStatusColor(log.status_code)">
+                  {{ log.status_code }}
+                </span>
+              </td>
+              <td>{{ formatResponseTime(log.response_time) }}</td>
+              <td>{{ log.user }}</td>
+              <td>{{ log.ip_address }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </p-card>
+  </div>
+
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-overlay">
+    <p-progressSpinner></p-progressSpinner>
+    <p>Cargando logs del sistema...</p>
+  </div>
+</div>

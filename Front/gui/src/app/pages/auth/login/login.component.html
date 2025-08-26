@@ -1,0 +1,110 @@
+<div class="login-container">
+  <p-card [style]="{ width: '28rem', overflow: 'hidden' }">
+    <!-- Header con icono -->
+    <ng-template pTemplate="header">
+      <div class="card-header">
+        <i class="pi pi-user" style="font-size: 4rem; color: #ffffff;"></i>
+      </div>
+    </ng-template>
+
+    <!-- Título y subtítulo -->
+    <ng-template pTemplate="title">Iniciar Sesión</ng-template>
+    <ng-template pTemplate="subtitle">Ingresa tus credenciales para acceder</ng-template>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Usuario/Email -->
+      <div class="input-group">
+        <label for="email" class="input-label">Usuario o Email</label>
+        <span class="p-input-icon-left">
+          <i class="pi pi-user"></i>
+          <input 
+            id="email"
+            type="text" 
+            pInputText 
+            formControlName="email"
+            placeholder="Ingresa tu usuario o email"
+            class="input-field"
+            [class.ng-invalid]="email?.invalid && email?.touched"
+            [class.ng-valid]="email?.valid"
+          />
+        </span>
+        <small class="p-error" *ngIf="email?.invalid && email?.touched">
+          <span *ngIf="email?.errors?.['required']">El usuario o email es requerido</span>
+          <span *ngIf="email?.errors?.['email']">Formato de email inválido</span>
+        </small>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="input-group">
+        <label for="password" class="input-label">Contraseña</label>
+        <span class="p-input-icon-left">
+          <i class="pi pi-lock"></i>
+          <p-password
+            id="password"
+            formControlName="password"
+            placeholder="Ingresa tu contraseña"
+            [toggleMask]="true"
+            [feedback]="false"
+            inputStyleClass="input-field"
+            [class.ng-invalid]="password?.invalid && password?.touched"
+            [class.ng-valid]="password?.valid"
+            [style]="{ width: '100%' }"
+          ></p-password>
+        </span>
+        <small class="p-error" *ngIf="password?.invalid && password?.touched">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">La contraseña debe tener al menos 6 caracteres</span>
+        </small>
+      </div>
+
+      <!-- OTP -->
+      <div class="input-group">
+        <label for="otp" class="input-label">Código OTP</label>
+        <span class="p-input-icon-left">
+          <i class="pi pi-key"></i>
+          <input 
+            id="otp"
+            type="text" 
+            pInputText 
+            formControlName="otp"
+            placeholder="Ingresa el código de 6 dígitos"
+            maxlength="6"
+            class="input-field"
+            [class.ng-invalid]="otp?.invalid && otp?.touched"
+            [class.ng-valid]="otp?.valid"
+          />
+        </span>
+        <small class="p-error" *ngIf="otp?.invalid && otp?.touched">
+          <span *ngIf="otp?.errors?.['required']">El código OTP es requerido</span>
+          <span *ngIf="otp?.errors?.['pattern']">El código debe tener 6 dígitos</span>
+        </small>
+      </div>
+
+
+
+      <!-- Botones -->
+      <div class="button-group">
+        <p-button 
+          label="Cancelar" 
+          severity="secondary" 
+          [outlined]="true" 
+          class="cancel-button"
+          type="button" />
+        <p-button 
+          label="Iniciar Sesión"
+          class="login-button"
+          [loading]="isLoading"
+          [disabled]="loginForm.invalid || isLoading"
+          type="submit" />
+      </div>
+    </form>
+  </p-card>
+
+  <!-- Enlace de registro -->
+  <div class="register-link">
+    <p>¿No tienes cuenta? <a routerLink="/auth/register" class="register-btn">Regístrate</a></p>
+  </div>
+
+  <!-- Toast para mensajes -->
+  <p-toast></p-toast>
+</div>

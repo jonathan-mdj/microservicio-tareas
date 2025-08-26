@@ -1,0 +1,2191 @@
+/* task.component.css */
+
+/* ==================================================
+   CONTAINER PRINCIPAL
+   ================================================== */
+.task-container {
+  padding: 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* ==================================================
+   HEADER SECTION
+   ================================================== */
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.header-content {
+  flex: 1;
+}
+
+.page-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2c3e50;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.page-title i {
+  color: #667eea;
+  font-size: 2rem;
+}
+
+.page-subtitle {
+  margin: 0;
+  color: #7f8c8d;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* ==================================================
+   MAIN TABS - IMPLEMENTACIÓN PERSONALIZADA
+   ================================================== */
+.main-tabs {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+
+/* Estilos para el contenedor de navegación de pestañas */
+.main-tabs .tabs-nav {
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  border: none !important;
+  padding: 0 2rem !important;
+  display: flex !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+}
+
+/* Estilos para cada botón de pestaña */
+.main-tabs .tabs-nav .tab-button {
+  color: rgba(255, 255, 255, 0.8) !important;
+  border: none !important;
+  padding: 1rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 12px 12px 0 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: transparent !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  font-size: 0.9rem !important;
+}
+
+/* Efecto shine para las pestañas */
+.main-tabs .tabs-nav .tab-button::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent) !important;
+  transition: left 0.6s ease !important;
+}
+
+.main-tabs .tabs-nav .tab-button:hover::before {
+  left: 100% !important;
+}
+
+/* Efectos hover para las pestañas */
+.main-tabs .tabs-nav .tab-button:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+/* Pestaña activa */
+.main-tabs .tabs-nav .tab-button.active {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-bottom: 4px solid white !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Colores específicos para cada pestaña usando nth-child */
+.main-tabs .tabs-nav .tab-button:nth-child(1) {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+.main-tabs .tabs-nav .tab-button:nth-child(1):hover,
+.main-tabs .tabs-nav .tab-button:nth-child(1).active {
+  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%) !important;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4) !important;
+}
+
+.main-tabs .tabs-nav .tab-button:nth-child(2) {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+}
+
+.main-tabs .tabs-nav .tab-button:nth-child(2):hover,
+.main-tabs .tabs-nav .tab-button:nth-child(2).active {
+  background: linear-gradient(135deg, #ff5252 0%, #e64a19 100%) !important;
+  box-shadow: 0 4px 16px rgba(255, 107, 107, 0.4) !important;
+}
+
+.main-tabs .tabs-nav .tab-button:nth-child(3) {
+  background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%) !important;
+}
+
+.main-tabs .tabs-nav .tab-button:nth-child(3):hover,
+.main-tabs .tabs-nav .tab-button:nth-child(3).active {
+  background: linear-gradient(135deg, #26d0ce 0%, #1a7f6b 100%) !important;
+  box-shadow: 0 4px 16px rgba(78, 205, 196, 0.4) !important;
+}
+
+/* Contenido de las pestañas */
+.main-tabs .tabs-content {
+  padding: 2rem !important;
+  background: transparent !important;
+}
+
+/* Panel de pestaña */
+.main-tabs .tabs-content .tab-panel {
+  animation: tabContentFadeIn 0.5s ease-out !important;
+}
+
+@keyframes tabContentFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos para los íconos de las pestañas */
+.main-tabs .tabs-nav .tab-button i {
+  font-size: 1.1rem !important;
+  margin-right: 0.5rem !important;
+}
+
+/* Responsive para las pestañas */
+@media (max-width: 768px) {
+  .main-tabs .tabs-nav {
+    padding: 0 1rem !important;
+    flex-direction: column !important;
+    gap: 0.25rem !important;
+  }
+  
+  .main-tabs .tabs-nav .tab-button {
+    border-radius: 8px !important;
+    margin-bottom: 0.25rem !important;
+  }
+}
+
+/* ==================================================
+   KANBAN CONTAINER
+   ================================================== */
+.kanban-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==================================================
+   FILTERS SECTION
+   ================================================== */
+.filters-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 2px solid #e9ecef;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 200px;
+}
+
+.filter-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.25rem;
+}
+
+.filter-actions {
+  margin-left: auto;
+}
+
+/* ==================================================
+   SELECT BUTTON STYLES (Filtro por Estado)
+   ================================================== */
+::ng-deep .p-selectbutton {
+  display: flex !important;
+  gap: 0.5rem !important;
+  flex-wrap: wrap !important;
+}
+
+::ng-deep .p-selectbutton .p-button {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  color: #495057 !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.25rem !important;
+  font-weight: 500 !important;
+  font-size: 0.85rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  min-width: 120px !important;
+  text-align: center !important;
+}
+
+::ng-deep .p-selectbutton .p-button::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent) !important;
+  transition: left 0.6s ease !important;
+}
+
+::ng-deep .p-selectbutton .p-button:hover::before {
+  left: 100% !important;
+}
+
+::ng-deep .p-selectbutton .p-button:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}
+
+::ng-deep .p-selectbutton .p-button.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4) !important;
+}
+
+/* ==================================================
+   SELECT STYLES (Filtro por Usuario) - ACTUALIZADO PARA P-SELECT
+   ================================================== */
+::ng-deep .p-select {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  min-width: 250px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+::ng-deep .p-select:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+::ng-deep .p-select:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+::ng-deep .p-select .p-select-label {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  min-height: 20px !important;
+}
+
+::ng-deep .p-select .p-select-trigger {
+  width: 3rem !important;
+  color: #6c757d !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+}
+
+::ng-deep .p-select:hover .p-select-trigger {
+  color: #667eea !important;
+}
+
+/* Panel del select - FONDO COMPLETAMENTE OPACO */
+::ng-deep .p-select-panel {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  margin-top: 0.5rem !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
+  min-width: 100% !important;
+}
+
+::ng-deep .p-select-panel .p-select-items {
+  padding: 0.5rem 0 !important;
+  background: white !important;
+  border-radius: 6px !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+
+::ng-deep .p-select-panel .p-select-item {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  background: white !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #f8f9fa !important;
+  cursor: pointer !important;
+}
+
+::ng-deep .p-select-panel .p-select-item:last-child {
+  border-bottom: none !important;
+}
+
+::ng-deep .p-select-panel .p-select-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+  transform: translateX(5px) !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1) !important;
+}
+
+::ng-deep .p-select-panel .p-select-item.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Estilos para el item seleccionado en el select */
+::ng-deep .p-select .p-select-label.p-inputtext {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  border: 2px solid #667eea !important;
+  color: #667eea !important;
+  font-weight: 600 !important;
+  padding: 0.75rem 1rem !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  border-radius: 8px !important;
+}
+
+/* Estilos para el botón de limpiar (X) - COMPLETAMENTE MEJORADO */
+::ng-deep .p-select .p-select-clear-icon {
+  color: #6c757d !important;
+  margin-left: auto !important;
+  margin-right: 0.5rem !important;
+  transition: all 0.3s ease !important;
+  border-radius: 50% !important;
+  width: 28px !important;
+  height: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background: rgba(108, 117, 125, 0.1) !important;
+  font-size: 0.9rem !important;
+  font-weight: bold !important;
+  border: 1px solid rgba(108, 117, 125, 0.2) !important;
+  flex-shrink: 0 !important;
+  order: 3 !important;
+}
+
+::ng-deep .p-select .p-select-clear-icon:hover {
+  background: rgba(220, 53, 69, 0.15) !important;
+  color: #dc3545 !important;
+  transform: scale(1.1) !important;
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3) !important;
+  border-color: rgba(220, 53, 69, 0.3) !important;
+}
+
+/* Contenedor del texto seleccionado */
+::ng-deep .p-select .p-select-label .p-select-label {
+  flex: 1 !important;
+  text-align: left !important;
+  padding-left: 0 !important;
+  margin-right: 0.75rem !important;
+  order: 1 !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Estilos para el placeholder */
+::ng-deep .p-select .p-select-label.p-placeholder {
+  color: #6c757d !important;
+  font-weight: 400 !important;
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+}
+
+/* Animación para el select */
+::ng-deep .p-select-panel {
+  animation: selectFadeIn 0.3s ease-out !important;
+}
+
+@keyframes selectFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Estilos específicos para el select de filtros */
+.filters-section ::ng-deep .p-select {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  min-width: 250px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+.filters-section ::ng-deep .p-select .p-select-label {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  min-height: 20px !important;
+}
+
+.filters-section ::ng-deep .p-select .p-select-clear-icon {
+  order: 3 !important;
+  margin-left: 0.75rem !important;
+  margin-right: 0 !important;
+  width: 28px !important;
+  height: 28px !important;
+  background: rgba(108, 117, 125, 0.1) !important;
+  border: 1px solid rgba(108, 117, 125, 0.2) !important;
+}
+
+.filters-section ::ng-deep .p-select .p-select-label .p-select-label {
+  order: 1 !important;
+  flex: 1 !important;
+  text-align: left !important;
+  padding-left: 0 !important;
+  margin-right: 0.75rem !important;
+  min-width: 0 !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+}
+
+/* Scrollbar personalizado para el select */
+::ng-deep .p-select-panel .p-select-items::-webkit-scrollbar {
+  width: 8px !important;
+}
+
+::ng-deep .p-select-panel .p-select-items::-webkit-scrollbar-track {
+  background: #f1f1f1 !important;
+  border-radius: 4px !important;
+}
+
+::ng-deep .p-select-panel .p-select-items::-webkit-scrollbar-thumb {
+  background: #c1c1c1 !important;
+  border-radius: 4px !important;
+}
+
+::ng-deep .p-select-panel .p-select-items::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8 !important;
+}
+
+/* ==================================================
+   SUMMARY SECTION
+   ================================================== */
+.summary-section {
+  margin-bottom: 1rem;
+}
+
+.summary-section ::ng-deep .p-card {
+  background: white !important;
+  border-radius: 15px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+  overflow: hidden !important;
+}
+
+.summary-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  color: white;
+  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 15px 15px 0 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-header i {
+  font-size: 1.3rem;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.summary-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.summary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem;
+  background: white;
+  border-radius: 12px;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.summary-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.05), transparent);
+  transition: left 0.6s ease;
+}
+
+.summary-item:hover::before {
+  left: 100%;
+}
+
+.summary-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
+  border-left-color: #764ba2;
+}
+
+.summary-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summary-value {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.5rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  transition: all 0.3s ease;
+}
+
+.summary-item:hover .summary-value {
+  transform: scale(1.1);
+}
+
+/* ==================================================
+   KANBAN BOARD
+   ================================================== */
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.kanban-column {
+  background: #f8f9fa;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.kanban-column:hover {
+  transform: translateY(-2px);
+}
+
+.column-header {
+  padding: 1rem 1.5rem;
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.column-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.column-count {
+  background: rgba(255, 255, 255, 0.2);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.column-content {
+  padding: 1rem;
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ==================================================
+   TASK CARDS
+   ================================================== */
+.task-card {
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.task-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.task-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.75rem;
+}
+
+.task-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.25rem;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.task-card:hover .task-actions {
+  opacity: 1;
+}
+
+.task-body {
+  margin-bottom: 0.75rem;
+}
+
+.task-description {
+  margin: 0;
+  color: #6c757d;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.task-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.task-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.task-creator,
+.task-date {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  color: #6c757d;
+}
+
+.task-deadline {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.task-deadline.overdue {
+  color: #dc3545;
+}
+
+.task-status-change {
+  margin-top: 0.75rem;
+}
+
+/* ==================================================
+   USERS CONTAINER
+   ================================================== */
+.users-container {
+  padding: 1rem 0;
+}
+
+.section-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.section-header h2 {
+  margin: 0 0 0.5rem 0;
+  color: #2c3e50;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.section-header p {
+  margin: 0;
+  color: #6c757d;
+  font-size: 1rem;
+}
+
+/* ==================================================
+   ROLE BADGES
+   ================================================== */
+.role-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+/* ==================================================
+   ACTION BUTTONS
+   ================================================== */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ==================================================
+   PAGINATION STYLES
+   ================================================== */
+::ng-deep .p-paginator {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  border: none !important;
+  border-radius: 12px !important;
+  padding: 1rem 1.5rem !important;
+  margin-top: 1rem !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  color: #495057 !important;
+  border-radius: 8px !important;
+  margin: 0 0.25rem !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent) !important;
+  transition: left 0.6s ease !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover::before {
+  left: 100% !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-first,
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next,
+::ng-deep .p-paginator .p-paginator-last {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  color: #495057 !important;
+  border-radius: 8px !important;
+  margin: 0 0.25rem !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-first:hover,
+::ng-deep .p-paginator .p-paginator-prev:hover,
+::ng-deep .p-paginator .p-paginator-next:hover,
+::ng-deep .p-paginator .p-paginator-last:hover {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-color: #667eea !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3) !important;
+}
+
+::ng-deep .p-paginator .p-paginator-first:disabled,
+::ng-deep .p-paginator .p-paginator-prev:disabled,
+::ng-deep .p-paginator .p-paginator-next:disabled,
+::ng-deep .p-paginator .p-paginator-last:disabled {
+  background: #f8f9fa !important;
+  color: #adb5bd !important;
+  border-color: #dee2e6 !important;
+  cursor: not-allowed !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .p-paginator .p-paginator-current {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: 2px solid #667eea !important;
+  border-radius: 8px !important;
+  padding: 0.5rem 1rem !important;
+  font-weight: 600 !important;
+  margin: 0 0.5rem !important;
+}
+
+::ng-deep .p-paginator .p-select {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-paginator .p-select:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+::ng-deep .p-paginator .p-select:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Estilos para el reporte de página actual */
+::ng-deep .p-paginator .p-paginator-current-page-report {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  background: white !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 8px !important;
+  border: 2px solid #e9ecef !important;
+  margin: 0 0.5rem !important;
+}
+
+/* Animación para el cambio de página */
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  animation: pageButtonPulse 0.3s ease-out;
+}
+
+@keyframes pageButtonPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ==================================================
+   FORMS
+   ================================================== */
+.task-form,
+.user-role-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #495057;
+  font-size: 0.9rem;
+}
+
+.form-input,
+.form-textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  transition: border-color 0.3s ease;
+}
+
+.form-input:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-input.readonly {
+  background-color: #f8f9fa;
+  color: #6c757d;
+}
+
+/* ==================================================
+   RESPONSIVE DESIGN
+   ================================================== */
+@media (max-width: 768px) {
+  .task-container {
+    padding: 1rem;
+  }
+  
+  .header-section {
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .kanban-board {
+    grid-template-columns: 1fr;
+  }
+  
+  .filters-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .filter-actions {
+    margin-left: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .summary-content {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .task-container {
+    padding: 0.5rem;
+  }
+  
+  .main-tabs ::ng-deep .p-tabs-content {
+    padding: 1rem;
+  }
+  
+  .summary-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .task-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}
+
+/* ==================================================
+   UTILITY CLASSES
+   ================================================== */
+.text-center {
+  text-align: center;
+}
+
+.overdue {
+  color: #dc3545 !important;
+  font-weight: 600;
+}
+
+.no-deadline {
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* ==================================================
+   ANIMATIONS
+   ================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.task-card {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ==================================================
+   SCROLLBAR STYLING
+   ================================================== */
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ==================================================
+   DIALOG MODAL STYLES
+   ================================================== */
+::ng-deep .p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(4px);
+}
+
+::ng-deep .p-dialog {
+  background: white !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-radius: 12px 12px 0 0 !important;
+  padding: 1.5rem 2rem !important;
+  border: none !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header .p-dialog-title {
+  color: white !important;
+  font-weight: 600 !important;
+  font-size: 1.2rem !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 32px !important;
+  height: 32px !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+  background: white !important;
+  padding: 2rem !important;
+  border-radius: 0 0 12px 12px !important;
+}
+
+::ng-deep .p-dialog .p-dialog-footer {
+  background: #f8f9fa !important;
+  padding: 1.5rem 2rem !important;
+  border-radius: 0 0 12px 12px !important;
+  border-top: 1px solid #e9ecef !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+  gap: 1rem !important;
+}
+
+/* Estilos para los botones del modal */
+::ng-deep .p-dialog .p-dialog-footer .p-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 0.75rem 1.5rem !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-dialog .p-dialog-footer .p-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Estilos para los campos del formulario en el modal */
+::ng-deep .p-dialog .p-inputtext,
+::ng-deep .p-dialog .p-inputtextarea,
+::ng-deep .p-dialog .p-select,
+::ng-deep .p-dialog .p-datepicker-input {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 0.75rem !important;
+  font-size: 0.9rem !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-dialog .p-inputtext:focus,
+::ng-deep .p-dialog .p-inputtextarea:focus,
+::ng-deep .p-dialog .p-select:focus,
+::ng-deep .p-dialog .p-datepicker-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+  outline: none !important;
+}
+
+/* Estilos para los labels en el modal */
+::ng-deep .p-dialog .form-label {
+  color: #495057 !important;
+  font-weight: 600 !important;
+  margin-bottom: 0.5rem !important;
+  font-size: 0.9rem !important;
+}
+
+/* Estilos para mensajes de error en el modal */
+::ng-deep .p-dialog .p-error {
+  color: #dc3545 !important;
+  font-size: 0.8rem !important;
+  margin-top: 0.25rem !important;
+}
+
+/* Animación de entrada del modal */
+::ng-deep .p-dialog-enter {
+  animation: dialogFadeIn 0.3s ease-out;
+}
+
+@keyframes dialogFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* ==================================================
+   TABLE STYLES
+   ================================================== */
+::ng-deep .p-datatable {
+  background: white !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+}
+
+::ng-deep .p-datatable .p-datatable-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  padding: 1.5rem 2rem !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 1.1rem !important;
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%) !important;
+  color: #495057 !important;
+  font-weight: 600 !important;
+  padding: 1rem 1.5rem !important;
+  border: none !important;
+  border-bottom: 2px solid #dee2e6 !important;
+  text-transform: uppercase !important;
+  font-size: 0.85rem !important;
+  letter-spacing: 0.5px !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-datatable .p-datatable-thead > tr > th:hover {
+  background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%) !important;
+  transform: translateY(-1px) !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+  transition: all 0.3s ease !important;
+  border-bottom: 1px solid #f8f9fa !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem 1.5rem !important;
+  border: none !important;
+  color: #495057 !important;
+  font-size: 0.9rem !important;
+  vertical-align: middle !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even) {
+  background: rgba(248, 249, 250, 0.5) !important;
+}
+
+::ng-deep .p-datatable .p-datatable-tbody > tr:nth-child(even):hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%) !important;
+}
+
+/* Estilos para las filas vacías */
+::ng-deep .p-datatable .p-datatable-tbody > tr.p-datatable-emptymessage > td {
+  text-align: center !important;
+  padding: 3rem 2rem !important;
+  color: #6c757d !important;
+  font-style: italic !important;
+  background: #f8f9fa !important;
+}
+
+/* Animación de entrada para las filas */
+::ng-deep .p-datatable .p-datatable-tbody > tr {
+  animation: tableRowFadeIn 0.5s ease-out;
+}
+
+@keyframes tableRowFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Estilos para los badges de estado y rol */
+::ng-deep .p-datatable .status-badge,
+::ng-deep .p-datatable .role-badge {
+  padding: 0.5rem 1rem !important;
+  border-radius: 20px !important;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-datatable .status-badge:hover,
+::ng-deep .p-datatable .role-badge:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Estilos para los botones de acción en las tablas */
+::ng-deep .p-datatable .action-buttons .p-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  padding: 0.5rem 1rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  margin: 0 0.25rem !important;
+}
+
+::ng-deep .p-datatable .action-buttons .p-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Estilos para el texto de fecha límite vencida */
+::ng-deep .p-datatable .overdue {
+  color: #dc3545 !important;
+  font-weight: 600 !important;
+  animation: overduePulse 2s infinite;
+}
+
+@keyframes overduePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+/* Estilos para el texto "Sin fecha límite" */
+::ng-deep .p-datatable .no-deadline {
+  color: #6c757d !important;
+  font-style: italic !important;
+  font-size: 0.85rem !important;
+}
+
+/* ==================================================
+   TOOLTIP STYLES
+   ================================================== */
+::ng-deep .p-tooltip {
+  background: rgba(0, 0, 0, 0.9) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  font-size: 0.85rem !important;
+  font-weight: 500 !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+  border: none !important;
+  backdrop-filter: blur(8px) !important;
+  max-width: 200px !important;
+  text-align: center !important;
+  line-height: 1.4 !important;
+  letter-spacing: 0.3px !important;
+}
+
+::ng-deep .p-tooltip .p-tooltip-text {
+  color: white !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3) !important;
+}
+
+::ng-deep .p-tooltip .p-tooltip-arrow {
+  border-color: rgba(0, 0, 0, 0.9) !important;
+}
+
+/* Animación para los tooltips */
+::ng-deep .p-tooltip {
+  animation: tooltipFadeIn 0.3s ease-out !important;
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Estilos específicos para tooltips de botones de acción */
+::ng-deep .action-buttons .p-tooltip {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .action-buttons .p-tooltip .p-tooltip-arrow {
+  border-color: #667eea !important;
+}
+
+/* Estilos para tooltips de botones de tareas */
+::ng-deep .task-actions .p-tooltip {
+  background: linear-gradient(135deg, #495057 0%, #343a40 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+::ng-deep .task-actions .p-tooltip .p-tooltip-arrow {
+  border-color: #495057 !important;
+}
+
+/* Estilos para tooltips de botones de eliminar */
+::ng-deep .p-button-danger + .p-tooltip {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .p-button-danger + .p-tooltip .p-tooltip-arrow {
+  border-color: #dc3545 !important;
+}
+
+/* Estilos para tooltips de botones de editar */
+::ng-deep .p-button-info + .p-tooltip {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .p-button-info + .p-tooltip .p-tooltip-arrow {
+  border-color: #17a2b8 !important;
+}
+
+/* Estilos para tooltips de botones primarios */
+::ng-deep .p-button-primary + .p-tooltip {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .p-button-primary + .p-tooltip .p-tooltip-arrow {
+  border-color: #007bff !important;
+}
+
+/* Estilos para tooltips de botones secundarios */
+::ng-deep .p-button-secondary + .p-tooltip {
+  background: linear-gradient(135deg, #6c757d 0%, #545b62 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .p-button-secondary + .p-tooltip .p-tooltip-arrow {
+  border-color: #6c757d !important;
+}
+
+/* Estilos para tooltips de botones de éxito */
+::ng-deep .p-button-success + .p-tooltip {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+::ng-deep .p-button-success + .p-tooltip .p-tooltip-arrow {
+  border-color: #28a745 !important;
+}
+
+/* Estilos para tooltips de botones de advertencia */
+::ng-deep .p-button-warning + .p-tooltip {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%) !important;
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  color: #212529 !important;
+}
+
+::ng-deep .p-button-warning + .p-tooltip .p-tooltip-text {
+  color: #212529 !important;
+}
+
+::ng-deep .p-button-warning + .p-tooltip .p-tooltip-arrow {
+  border-color: #ffc107 !important;
+}
+
+/* Efecto de brillo para todos los tooltips */
+::ng-deep .p-tooltip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+::ng-deep .p-tooltip:hover::before {
+  left: 100%;
+}
+
+/* Responsive para tooltips */
+@media (max-width: 768px) {
+  ::ng-deep .p-tooltip {
+    font-size: 0.8rem !important;
+    padding: 0.5rem 0.75rem !important;
+    max-width: 150px !important;
+  }
+}
+
+/* ==================================================
+   FILTER ACTIONS BUTTON STYLES
+   ================================================== */
+::ng-deep .filter-actions .p-button {
+  background: linear-gradient(135deg, #6c757d 0%, #545b62 100%) !important;
+  border: 2px solid #6c757d !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1.5rem !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+}
+
+::ng-deep .filter-actions .p-button::before {
+  content: '' !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: -100% !important;
+  width: 100% !important;
+  height: 100% !important;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent) !important;
+  transition: left 0.6s ease !important;
+}
+
+::ng-deep .filter-actions .p-button:hover::before {
+  left: 100% !important;
+}
+
+::ng-deep .filter-actions .p-button:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%) !important;
+  border-color: #5a6268 !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(108, 117, 125, 0.4) !important;
+}
+
+::ng-deep .filter-actions .p-button:active {
+  transform: translateY(0) !important;
+  box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3) !important;
+}
+
+/* Estilos para el ícono del botón */
+::ng-deep .filter-actions .p-button .p-button-icon {
+  margin-right: 0.5rem !important;
+  font-size: 0.9rem !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .filter-actions .p-button:hover .p-button-icon {
+  transform: rotate(180deg) !important;
+}
+
+/* ==================================================
+   DATEPICKER STYLES - ACTUALIZADO PARA P-DATEPICKER
+   ================================================== */
+::ng-deep .p-datepicker {
+  background: #ffffff !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 1rem !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-title {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-prev,
+::ng-deep .p-datepicker .p-datepicker-next {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-prev:hover,
+::ng-deep .p-datepicker .p-datepicker-next:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-panel {
+  background: #ffffff !important;
+  border: none !important;
+  padding: 1rem !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar {
+  background: #ffffff !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar th {
+  background: #f8f9fa !important;
+  color: #495057 !important;
+  font-weight: 600 !important;
+  padding: 0.75rem !important;
+  border: none !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar td {
+  padding: 0.25rem !important;
+  border: none !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar td > span {
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar td > span:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+  transform: scale(1.1) !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar td > span.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+::ng-deep .p-datepicker .p-datepicker-calendar td > span.p-today {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+::ng-deep .p-datepicker .p-timepicker {
+  background: #ffffff !important;
+  border-top: 1px solid #e9ecef !important;
+  padding: 1rem !important;
+}
+
+::ng-deep .p-datepicker .p-timepicker .p-hour-picker,
+::ng-deep .p-datepicker .p-timepicker .p-minute-picker,
+::ng-deep .p-datepicker .p-timepicker .p-second-picker {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 6px !important;
+  padding: 0.5rem !important;
+  margin: 0 0.25rem !important;
+}
+
+::ng-deep .p-datepicker .p-timepicker .p-hour-picker:hover,
+::ng-deep .p-datepicker .p-timepicker .p-minute-picker:hover,
+::ng-deep .p-datepicker .p-timepicker .p-second-picker:hover {
+  background: #e9ecef !important;
+  border-color: #667eea !important;
+}
+
+::ng-deep .p-datepicker .p-timepicker .p-separator {
+  color: #6c757d !important;
+  font-weight: bold !important;
+  margin: 0 0.5rem !important;
+}
+
+/* Estilos para el input del datepicker */
+::ng-deep .p-datepicker-input {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  min-width: 200px !important;
+}
+
+::ng-deep .p-datepicker-input:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+::ng-deep .p-datepicker-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  outline: none !important;
+}
+
+/* Animación para el datepicker */
+::ng-deep .p-datepicker {
+  animation: datepickerFadeIn 0.3s ease-out !important;
+}
+
+@keyframes datepickerFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ==================================================
+   VALIDACIONES DE FECHA
+   ================================================== */
+.selected-date {
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.selected-date .text-info {
+  color: #667eea !important;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.selected-date .pi-calendar-check {
+  color: #28a745;
+  font-size: 0.9rem;
+}
+
+/* Estilos para errores de validación */
+.p-error {
+  color: #dc3545 !important;
+  font-size: 0.85rem;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(220, 53, 69, 0.1);
+  border-radius: 6px;
+  border-left: 3px solid #dc3545;
+}
+
+.p-error .pi-exclamation-triangle {
+  color: #dc3545;
+  font-size: 0.9rem;
+}
+
+/* Estilos para el campo de fecha cuando tiene errores */
+.form-field .p-datepicker-input.ng-invalid.ng-touched {
+  border-color: #dc3545 !important;
+  box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+}
+
+/* Estilos para el campo de fecha cuando es válido */
+.form-field .p-datepicker-input.ng-valid.ng-touched {
+  border-color: #28a745 !important;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1) !important;
+}
+
+/* ==================================================
+   ESTILOS PARA COMPONENTES PRIMENG PERSONALIZADOS
+   ================================================== */
+
+/* Estilos para p-select personalizados */
+::ng-deep .custom-select .p-dropdown {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+::ng-deep .custom-select .p-dropdown:not(.p-disabled):hover {
+  border-color: #667eea !important;
+}
+
+::ng-deep .custom-select .p-dropdown:not(.p-disabled).p-focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
+::ng-deep .custom-select-panel {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  z-index: 9999 !important;
+}
+
+::ng-deep .custom-select-panel .p-dropdown-items .p-dropdown-item {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .custom-select-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+}
+
+::ng-deep .custom-select-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+/* Estilos para p-select de Kanban */
+::ng-deep .custom-select-kanban .p-dropdown {
+  border: 1px solid #dee2e6 !important;
+  border-radius: 6px !important;
+  background: white !important;
+  font-size: 0.9rem !important;
+}
+
+::ng-deep .custom-select-kanban .p-dropdown:not(.p-disabled):hover {
+  border-color: #667eea !important;
+}
+
+/* Estilos para p-datePicker personalizado */
+::ng-deep .custom-datepicker .p-calendar {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+}
+
+::ng-deep .custom-datepicker .p-calendar:not(.p-disabled):hover {
+  border-color: #667eea !important;
+}
+
+::ng-deep .custom-datepicker .p-calendar:not(.p-disabled).p-focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
+::ng-deep .custom-datepicker-panel {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  z-index: 9999 !important;
+}
+
+/* Estilos para p-dialog personalizados */
+::ng-deep .task-dialog .p-dialog {
+  border-radius: 15px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+}
+
+::ng-deep .task-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-radius: 15px 15px 0 0 !important;
+  border: none !important;
+}
+
+::ng-deep .task-dialog .p-dialog-title {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .task-dialog .p-dialog-header-icon {
+  color: white !important;
+}
+
+::ng-deep .task-dialog .p-dialog-header-icon:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+}
+
+::ng-deep .user-role-dialog .p-dialog {
+  border-radius: 12px !important;
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.25) !important;
+}
+
+::ng-deep .user-role-dialog .p-dialog-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border-radius: 12px 12px 0 0 !important;
+  border: none !important;
+}
+
+::ng-deep .user-role-dialog .p-dialog-title {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+::ng-deep .user-role-dialog .p-dialog-header-icon {
+  color: white !important;
+}
+
+::ng-deep .user-role-dialog .p-dialog-header-icon:hover {
+  background: rgba(255, 255, 255, 0.2) !important;
+  border-radius: 50% !important;
+}
+
+/* ==================================================
+   ESTILOS PARA TABLAS PRIMENG (PAGINACIÓN)
+   ================================================== */
+
+/* Estilos para el dropdown de elementos por página */
+::ng-deep .p-paginator .p-dropdown {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+  min-width: 80px !important;
+}
+
+::ng-deep .p-paginator .p-dropdown:not(.p-disabled):hover {
+  border-color: #667eea !important;
+}
+
+::ng-deep .p-paginator .p-dropdown:not(.p-disabled).p-focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Panel del dropdown de paginación */
+::ng-deep .p-paginator .p-dropdown-panel {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  z-index: 9999 !important;
+}
+
+::ng-deep .p-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+}
+
+::ng-deep .p-paginator .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+}
+
+/* Estilos para los botones de paginación */
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+  color: #495057 !important;
+  margin: 0 2px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page:hover {
+  border-color: #667eea !important;
+  background: rgba(102, 126, 234, 0.1) !important;
+  color: #667eea !important;
+}
+
+::ng-deep .p-paginator .p-paginator-pages .p-paginator-page.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border-color: #667eea !important;
+  color: white !important;
+}
+
+/* Botones de navegación (primera, anterior, siguiente, última) */
+::ng-deep .p-paginator .p-paginator-first,
+::ng-deep .p-paginator .p-paginator-prev,
+::ng-deep .p-paginator .p-paginator-next,
+::ng-deep .p-paginator .p-paginator-last {
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  background: white !important;
+  color: #495057 !important;
+  margin: 0 2px !important;
+  min-width: 40px !important;
+  height: 40px !important;
+  transition: all 0.3s ease !important;
+}
+
+::ng-deep .p-paginator .p-paginator-first:hover,
+::ng-deep .p-paginator .p-paginator-prev:hover,
+::ng-deep .p-paginator .p-paginator-next:hover,
+::ng-deep .p-paginator .p-paginator-last:hover {
+  border-color: #667eea !important;
+  background: rgba(102, 126, 234, 0.1) !important;
+  color: #667eea !important;
+}
+
+::ng-deep .p-paginator .p-paginator-first.p-disabled,
+::ng-deep .p-paginator .p-paginator-prev.p-disabled,
+::ng-deep .p-paginator .p-paginator-next.p-disabled,
+::ng-deep .p-paginator .p-paginator-last.p-disabled {
+  background: #f8f9fa !important;
+  border-color: #dee2e6 !important;
+  color: #6c757d !important;
+  cursor: not-allowed !important;
+}
+
+/* Contenedor del paginador */
+::ng-deep .p-paginator {
+  background: transparent !important;
+  border: none !important;
+  padding: 1rem 0 !important;
+}
+
+/* Texto del reporte de página actual */
+::ng-deep .p-paginator .p-paginator-current {
+  color: #495057 !important;
+  font-weight: 500 !important;
+  margin-right: 1rem !important;
+}
+
+/* ==================================================
+   ESTILOS ADICIONALES PARA PAGINACIÓN
+   ================================================== */
+
+/* Asegurar que el dropdown de paginación tenga z-index alto */
+::ng-deep .p-paginator .p-dropdown {
+  position: relative !important;
+  z-index: 9998 !important;
+}
+
+/* Panel del dropdown con z-index muy alto */
+::ng-deep .p-paginator .p-dropdown-panel {
+  position: absolute !important;
+  z-index: 9999 !important;
+  margin-top: 5px !important;
+}
+
+/* Estilos para el input del dropdown de paginación */
+::ng-deep .p-paginator .p-dropdown .p-dropdown-trigger {
+  background: transparent !important;
+  border: none !important;
+  color: #495057 !important;
+  width: 2rem !important;
+  height: 100% !important;
+}
+
+::ng-deep .p-paginator .p-dropdown .p-dropdown-trigger:hover {
+  background: rgba(102, 126, 234, 0.1) !important;
+  border-radius: 0 6px 6px 0 !important;
+}
+
+/* Estilos para el input del dropdown */
+::ng-deep .p-paginator .p-dropdown .p-dropdown-input {
+  background: transparent !important;
+  border: none !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  text-align: center !important;
+  padding: 0.5rem !important;
+}
+
+::ng-deep .p-paginator .p-dropdown .p-dropdown-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* Estilos para el contenedor del paginador */
+::ng-deep .p-paginator {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: wrap !important;
+  gap: 1rem !important;
+}
+
+/* Estilos para el lado izquierdo del paginador */
+::ng-deep .p-paginator .p-paginator-left {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* Estilos para el lado derecho del paginador */
+::ng-deep .p-paginator .p-paginator-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}
+
+/* Estilos para el grupo de botones de página */
+::ng-deep .p-paginator .p-paginator-pages {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.25rem !important;
+}
+
+/* Estilos para el dropdown de elementos por página */
+::ng-deep .p-paginator .p-paginator-element {
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+}

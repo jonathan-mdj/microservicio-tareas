@@ -1,0 +1,564 @@
+/* styles.css */
+@import "primeicons/primeicons.css";
+
+/* ==================================================
+   TEMA PRIMENG - LARA LIGHT BLUE
+   ================================================== */
+:root {
+  --primary-color: #3B82F6;
+  --primary-color-text: #ffffff;
+  --surface-ground: #f8f9fa;
+  --surface-section: #ffffff;
+  --surface-card: #ffffff;
+  --surface-overlay: #ffffff;
+  --surface-border: #dee2e6;
+  --surface-hover: #f8f9fa;
+  --focus-ring: 0 0 0 0.2rem #bfdbfe;
+  --maskbg: rgba(0, 0, 0, 0.4);
+  --highlight-bg: #dbeafe;
+  --highlight-text-color: #1e40af;
+}
+
+/* ==================================================
+   RESET Y ESTILOS BASE
+   ================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+}
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ==================================================
+   UTILIDADES GLOBALES
+   ================================================== */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.mb-1 { margin-bottom: 0.25rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-3 { margin-bottom: 1rem; }
+.mb-4 { margin-bottom: 1.5rem; }
+.mb-5 { margin-bottom: 3rem; }
+
+.mt-1 { margin-top: 0.25rem; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-3 { margin-top: 1rem; }
+.mt-4 { margin-top: 1.5rem; }
+.mt-5 { margin-top: 3rem; }
+
+.p-1 { padding: 0.25rem; }
+.p-2 { padding: 0.5rem; }
+.p-3 { padding: 1rem; }
+.p-4 { padding: 1.5rem; }
+.p-5 { padding: 3rem; }
+
+/* ==================================================
+   ANIMACIONES GLOBALES
+   ================================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+/* ==================================================
+   SCROLLBAR PERSONALIZADO
+   ================================================== */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ==================================================
+   OVERRIDES DE PRIMENG
+   ================================================== */
+.p-button {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.p-card {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  border: none !important;
+}
+
+.p-inputtext,
+.p-select,
+.p-datepicker-input {
+  border-radius: 8px !important;
+  border: 1px solid #ced4da !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-inputtext:focus,
+.p-select:focus,
+.p-datepicker-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+.p-tabs .p-tabs-nav {
+  border: none !important;
+  background: transparent !important;
+}
+
+.p-tabs .p-tabs-nav .p-tabs-nav-link {
+  border: none !important;
+  border-radius: 8px 8px 0 0 !important;
+  margin-right: 0.25rem !important;
+}
+
+.p-table {
+  border-radius: 8px !important;
+  overflow: hidden !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+}
+
+.p-table .p-datatable-header {
+  background: #f8f9fa !important;
+  border: none !important;
+}
+
+.p-table .p-datatable-thead > tr > th {
+  background: #f8f9fa !important;
+  border: none !important;
+  font-weight: 600 !important;
+  color: #495057 !important;
+}
+
+.p-dialog .p-dialog-header {
+  border-radius: 12px 12px 0 0 !important;
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  color: white !important;
+}
+
+.p-dialog .p-dialog-content {
+  border-radius: 0 0 12px 12px !important;
+}
+
+.p-toast .p-toast-message {
+  border-radius: 8px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+.p-confirm-dialog .p-dialog-header {
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  color: white !important;
+  border-radius: 12px 12px 0 0 !important;
+}
+
+.p-confirm-dialog .p-dialog-content {
+  border-radius: 0 0 12px 12px !important;
+}
+
+/* ==================================================
+   FALLBACKS PARA PRIMENG
+   ================================================== */
+.p-component {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif !important;
+}
+
+.p-inputtext {
+  font-size: 0.9rem !important;
+}
+
+.p-select {
+  font-size: 0.9rem !important;
+}
+
+.p-button-text {
+  background: transparent !important;
+  border: none !important;
+  color: inherit !important;
+}
+
+.p-button-text:hover {
+  background: rgba(0, 0, 0, 0.04) !important;
+}
+
+.p-button-text.p-button-danger:hover {
+  background: rgba(220, 53, 69, 0.1) !important;
+  color: #dc3545 !important;
+}
+
+/* ==================================================
+   ESTILOS ESPECÍFICOS PARA COMPONENTES
+   ================================================== */
+.p-selectbutton .p-button {
+  border-radius: 6px !important;
+  margin-right: 0.25rem !important;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  background: #667eea !important;
+  border-color: #667eea !important;
+}
+
+.p-messages .p-message {
+  border-radius: 8px !important;
+  margin-bottom: 1rem !important;
+}
+
+.p-messages .p-message-icon {
+  font-size: 1rem !important;
+}
+
+.p-messages .p-message-text {
+  font-size: 0.9rem !important;
+}
+
+/* ==================================================
+   PRIMENG GLOBAL STYLES - ACTUALIZADO
+   ================================================== */
+
+/* Estilos base para inputs */
+.p-inputtext,
+.p-select,
+.p-datepicker-input {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-inputtext:hover,
+.p-select:hover,
+.p-datepicker-input:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+.p-inputtext:focus,
+.p-select:focus,
+.p-datepicker-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  outline: none !important;
+}
+
+/* Estilos para tabs - ACTUALIZADO */
+.p-tabs .p-tabs-nav {
+  background: linear-gradient(90deg, #667eea, #764ba2) !important;
+  border: none !important;
+  padding: 0 2rem !important;
+  display: flex !important;
+  gap: 0.5rem !important;
+  margin: 0 !important;
+}
+
+.p-tabs .p-tabs-nav .p-tabs-nav-link {
+  color: rgba(255, 255, 255, 0.8) !important;
+  border: none !important;
+  padding: 1rem 1.5rem !important;
+  font-weight: 500 !important;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border-radius: 12px 12px 0 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 0.5rem !important;
+  background: transparent !important;
+  margin: 0 !important;
+}
+
+.p-tabs .p-tabs-nav .p-tabs-nav-link:hover {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.15) !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2) !important;
+}
+
+.p-tabs .p-tabs-nav .p-tabs-nav-link.p-highlight {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.25) !important;
+  border-bottom: 4px solid white !important;
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Estilos para select - ACTUALIZADO */
+.p-select {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  min-width: 200px !important;
+  transition: all 0.3s ease !important;
+  position: relative !important;
+}
+
+.p-select:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+.p-select:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+}
+
+.p-select .p-select-label {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 0.75rem !important;
+  min-height: 20px !important;
+}
+
+.p-select .p-select-trigger {
+  width: 3rem !important;
+  color: #6c757d !important;
+  transition: all 0.3s ease !important;
+  flex-shrink: 0 !important;
+}
+
+.p-select:hover .p-select-trigger {
+  color: #667eea !important;
+}
+
+/* Panel del select */
+.p-select-panel {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  margin-top: 0.5rem !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+.p-select-panel .p-select-items {
+  padding: 0.5rem 0 !important;
+  background: white !important;
+  border-radius: 6px !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+}
+
+.p-select-panel .p-select-item {
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  border: none !important;
+  background: white !important;
+  margin: 0 !important;
+  border-bottom: 1px solid #f8f9fa !important;
+  cursor: pointer !important;
+}
+
+.p-select-panel .p-select-item:last-child {
+  border-bottom: none !important;
+}
+
+.p-select-panel .p-select-item:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+  transform: translateX(5px) !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1) !important;
+}
+
+.p-select-panel .p-select-item.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2) !important;
+}
+
+/* Estilos para datepicker - ACTUALIZADO */
+.p-datepicker {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  overflow: hidden !important;
+  z-index: 9999 !important;
+}
+
+.p-datepicker .p-datepicker-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  border: none !important;
+  padding: 1rem !important;
+  border-radius: 8px 8px 0 0 !important;
+}
+
+.p-datepicker .p-datepicker-title {
+  color: white !important;
+  font-weight: 600 !important;
+}
+
+.p-datepicker .p-datepicker-prev,
+.p-datepicker .p-datepicker-next {
+  color: white !important;
+  background: rgba(255, 255, 255, 0.2) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 2rem !important;
+  height: 2rem !important;
+  transition: all 0.3s ease !important;
+}
+
+.p-datepicker .p-datepicker-prev:hover,
+.p-datepicker .p-datepicker-next:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.1) !important;
+}
+
+.p-datepicker .p-datepicker-panel {
+  background: white !important;
+  border: none !important;
+  padding: 1rem !important;
+}
+
+.p-datepicker .p-datepicker-calendar {
+  background: white !important;
+}
+
+.p-datepicker .p-datepicker-calendar th {
+  background: #f8f9fa !important;
+  color: #495057 !important;
+  font-weight: 600 !important;
+  padding: 0.75rem !important;
+  border: none !important;
+}
+
+.p-datepicker .p-datepicker-calendar td {
+  padding: 0.25rem !important;
+  border: none !important;
+}
+
+.p-datepicker .p-datepicker-calendar td > span {
+  border-radius: 6px !important;
+  transition: all 0.3s ease !important;
+  font-weight: 500 !important;
+}
+
+.p-datepicker .p-datepicker-calendar td > span:hover {
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
+  color: #667eea !important;
+  transform: scale(1.1) !important;
+}
+
+.p-datepicker .p-datepicker-calendar td > span.p-highlight {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3) !important;
+}
+
+.p-datepicker .p-datepicker-calendar td > span.p-today {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+  color: white !important;
+  font-weight: bold !important;
+}
+
+.p-datepicker .p-timepicker {
+  background: white !important;
+  border-top: 1px solid #e9ecef !important;
+  padding: 1rem !important;
+}
+
+.p-datepicker .p-timepicker .p-hour-picker,
+.p-datepicker .p-timepicker .p-minute-picker,
+.p-datepicker .p-timepicker .p-second-picker {
+  background: #f8f9fa !important;
+  border: 1px solid #e9ecef !important;
+  border-radius: 6px !important;
+  padding: 0.5rem !important;
+  margin: 0 0.25rem !important;
+}
+
+.p-datepicker .p-timepicker .p-hour-picker:hover,
+.p-datepicker .p-timepicker .p-minute-picker:hover,
+.p-datepicker .p-timepicker .p-second-picker:hover {
+  background: #e9ecef !important;
+  border-color: #667eea !important;
+}
+
+.p-datepicker .p-timepicker .p-separator {
+  color: #6c757d !important;
+  font-weight: bold !important;
+  margin: 0 0.5rem !important;
+}
+
+/* Estilos para el input del datepicker */
+.p-datepicker-input {
+  background: white !important;
+  border: 2px solid #e9ecef !important;
+  border-radius: 8px !important;
+  padding: 0.75rem 1rem !important;
+  color: #495057 !important;
+  font-weight: 500 !important;
+  transition: all 0.3s ease !important;
+  min-width: 200px !important;
+}
+
+.p-datepicker-input:hover {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1) !important;
+}
+
+.p-datepicker-input:focus {
+  border-color: #667eea !important;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2) !important;
+  outline: none !important;
+}

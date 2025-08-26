@@ -1,0 +1,30 @@
+﻿# Variables de entorno adicionales (crítico para seguridad)
+.env.production
+.env.local
+.env.dev
+
+# Archivos de Python adicionales
+*.egg-info/
+.installed.cfg
+*.egg
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+build/
+develop-eggs/
+
+# Logs y archivos temporales de Angular
+*.log
+.angular/
+
+# Archivos de sistema
+Thumbs.db
+.DS_Store
+
+# Backup de entornos virtuales
+env.bak/
+venv.bak/
+ENV/

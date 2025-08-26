@@ -1,0 +1,38 @@
+<!-- not-found.component.html -->
+<div class="not-found-container">
+  <p-card class="not-found-card">
+    <ng-template pTemplate="header">
+      <div class="error-header">
+        <i class="pi pi-exclamation-circle" style="font-size: 4rem; color: var(--red-500);"></i>
+      </div>
+    </ng-template>
+    
+    <div class="error-content">
+      <h1>404</h1>
+      <h2>Página no encontrada</h2>
+      <p class="error-message">
+        Lo sentimos, la página que estás buscando no existe o ha sido movida.
+      </p>
+      <p class="error-suggestion">
+        Puedes volver a la página de inicio o intentar buscar lo que necesitas.
+      </p>
+    </div>
+    
+    <ng-template pTemplate="footer">
+      <div class="error-actions">
+        <p-button 
+          label="Volver al Inicio" 
+          icon="pi pi-home" 
+          routerLink="/"
+          styleClass="p-button-primary">
+        </p-button>
+        
+        <p-button 
+          label="Contactar Soporte" 
+          icon="pi pi-lifebuoy" 
+          styleClass="p-button-outlined p-button-help ml-2">
+        </p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

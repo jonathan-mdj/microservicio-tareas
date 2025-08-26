@@ -1,0 +1,26 @@
+<div class="role-management-container">
+  <div class="info-card">
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-shield"></i>
+          <span>Gestión de Roles</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="card-content">
+          <p>La gestión de roles se realiza desde el panel de gestión de usuarios.</p>
+          <p>Puedes cambiar el rol de cualquier usuario haciendo clic en el botón "Cambiar Rol" en la tabla de usuarios.</p>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="footer">
+        <p-button 
+          label="Ir a Gestión de Usuarios" 
+          icon="pi pi-users" 
+          severity="primary"
+          routerLink="/admin/users">
+        </p-button>
+      </ng-template>
+    </p-card>
+  </div>
+</div>

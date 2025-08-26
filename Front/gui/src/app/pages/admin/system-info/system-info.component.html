@@ -1,0 +1,112 @@
+<div class="system-info-container">
+  <div class="header-section">
+    <h1>Información del Sistema</h1>
+    <p>Estado y estadísticas de todos los servicios</p>
+  </div>
+
+  <div class="content-section">
+    <div class="refresh-section">
+      <p-button 
+        label="Actualizar" 
+        icon="pi pi-refresh" 
+        severity="primary"
+        [loading]="isLoading"
+        (click)="refreshSystemInfo()">
+      </p-button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-section">
+      <p-progressSpinner></p-progressSpinner>
+      <p>Cargando información del sistema...</p>
+    </div>
+
+    <div *ngIf="error" class="error-section">
+      <p-card>
+        <ng-template pTemplate="content">
+          <div class="error-content">
+            <i class="pi pi-exclamation-triangle" style="color: #dc3545; font-size: 2rem;"></i>
+            <p>{{ error }}</p>
+            <p-button 
+              label="Reintentar" 
+              icon="pi pi-refresh" 
+              severity="secondary"
+              (click)="loadSystemInfo()">
+            </p-button>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+
+    <div *ngIf="systemInfo && !isLoading" class="info-grid">
+      <!-- Información General -->
+      <p-card class="info-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <i class="pi pi-info-circle"></i>
+            <span>Información General</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="info-content">
+            <div class="info-item">
+              <span class="label">Sistema:</span>
+              <span class="value">{{ systemInfo.sistema }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Usuario Actual:</span>
+              <span class="value">{{ systemInfo.usuario_actual }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+
+      <!-- Estadísticas -->
+      <p-card class="info-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <i class="pi pi-chart-bar"></i>
+            <span>Estadísticas del Sistema</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="info-content">
+            <div class="info-item">
+              <span class="label">Total Usuarios:</span>
+              <span class="value">{{ systemInfo.estadisticas.total_usuarios }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Total Roles:</span>
+              <span class="value">{{ systemInfo.estadisticas.total_roles }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Total Permisos:</span>
+              <span class="value">{{ systemInfo.estadisticas.total_permisos }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Total Tareas:</span>
+              <span class="value">{{ systemInfo.estadisticas.total_tareas }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+
+      <!-- Tareas por Estado -->
+      <p-card class="info-card">
+        <ng-template pTemplate="header">
+          <div class="card-header">
+            <i class="pi pi-tasks"></i>
+            <span>Tareas por Estado</span>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content">
+          <div class="info-content">
+            <div class="info-item" *ngFor="let status of getTaskStatuses()">
+              <span class="label">{{ status.label }}:</span>
+              <span class="value">{{ status.count }}</span>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+    </div>
+  </div>
+</div>

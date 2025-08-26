@@ -1,0 +1,43 @@
+<!-- app.component.html -->
+<div class="app-container">
+  <!-- Navegación principal -->
+  <nav class="main-nav" *ngIf="authService.isAuthenticated()">
+    <div class="nav-container">
+      <div class="nav-brand">
+        <i class="pi pi-tasks"></i>
+        <span>Task Manager</span>
+      </div>
+      
+      <div class="nav-menu">
+        <a routerLink="/tasks" routerLinkActive="active" class="nav-link">
+          <i class="pi pi-th-large"></i>
+          Tareas
+        </a>
+        <a routerLink="/admin/graficas" routerLinkActive="active" class="nav-link" *ngIf="authService.isAdmin()">
+          <i class="pi pi-chart-bar"></i>
+          Gráficas
+        </a>
+      </div>
+      
+      <div class="nav-user">
+        <span class="user-info">
+          <i class="pi pi-user"></i>
+          {{ authService.getCurrentUser()?.username }}
+        </span>
+        <button 
+          pButton 
+          type="button" 
+          icon="pi pi-sign-out" 
+          class="p-button-text p-button-sm"
+          (click)="authService.logout()"
+          pTooltip="Cerrar sesión">
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Contenido principal -->
+  <main class="main-content" [class.with-nav]="authService.isAuthenticated()">
+    <router-outlet></router-outlet>
+  </main>
+</div>

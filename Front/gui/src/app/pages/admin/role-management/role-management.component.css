@@ -1,0 +1,38 @@
+.role-management-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.info-card {
+  margin-top: 2rem;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.card-header i {
+  font-size: 1.2rem;
+  color: #667eea;
+}
+
+.card-content {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+.card-content p {
+  margin: 1rem 0;
+  color: #6c757d;
+  line-height: 1.6;
+}
+
+.card-content p:first-child {
+  font-weight: 600;
+  color: #495057;
+}

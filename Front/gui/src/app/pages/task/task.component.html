@@ -1,0 +1,563 @@
+<!-- task.component.html -->
+<p-toast></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<div class="task-container">
+  <!-- Header con título y botón de nueva tarea -->
+  <div class="header-section">
+    <div class="header-content">
+      <h1 class="page-title">
+        <i class="pi pi-tasks"></i>
+        Gestión de Tareas
+      </h1>
+      <p class="page-subtitle">Sistema de gestión de tareas con vista Kanban</p>
+    </div>
+    <div class="header-actions">
+      <p-button 
+        label="Nueva Tarea" 
+        icon="pi pi-plus" 
+        severity="primary"
+        (click)="openNewTask()">
+      </p-button>
+    </div>
+  </div>
+
+  <!-- Tabs principales - IMPLEMENTACIÓN SIMPLIFICADA -->
+  <div class="main-tabs">
+    <div class="tabs-nav">
+      <button 
+        class="tab-button" 
+        [class.active]="activeTabIndex === 0"
+        (click)="activeTabIndex = 0">
+        <i class="pi pi-th-large"></i>
+        Vista Kanban
+      </button>
+      <button 
+        class="tab-button" 
+        [class.active]="activeTabIndex === 1"
+        (click)="activeTabIndex = 1"
+        *ngIf="authService.isAdmin()">
+        <i class="pi pi-users"></i>
+        Gestión de Usuarios
+      </button>
+
+      <button 
+        class="tab-button" 
+        [class.active]="activeTabIndex === 2"
+        (click)="activeTabIndex = 2">
+        <i class="pi pi-list"></i>
+        Lista de Tareas
+      </button>
+    </div>
+    
+    <div class="tabs-content">
+    <!-- Tab: Vista Kanban -->
+      <div class="tab-panel" *ngIf="activeTabIndex === 0">
+      <div class="kanban-container">
+        
+        <!-- Filtros -->
+        <div class="filters-section">
+          <div class="filter-group">
+            <label class="filter-label">Filtrar por estado:</label>
+            <p-selectButton 
+              [(ngModel)]="statusFilter" 
+              [options]="[
+                {label: 'Todos', value: 'all'},
+                {label: 'En Progreso', value: 'In Progress'},
+                {label: 'En Revisión', value: 'Revision'},
+                {label: 'Completadas', value: 'Completed'},
+                {label: 'Pausadas', value: 'Paused'}
+              ]"
+              (onChange)="applyFilters()">
+            </p-selectButton>
+          </div>
+          
+          <div class="filter-group" *ngIf="authService.isAdmin()">
+            <label class="filter-label">Filtrar por usuario:</label>
+              <p-select 
+              [(ngModel)]="userFilter" 
+              [options]="users" 
+              optionLabel="username" 
+              optionValue="id"
+              placeholder="Seleccionar usuario"
+              [showClear]="true"
+              appendTo="body"
+              [autoZIndex]="true"
+              [baseZIndex]="9995"
+              styleClass="custom-select"
+              [panelStyleClass]="'custom-select-panel'"
+              [scrollHeight]="'200px'"
+              (onChange)="applyFilters()">
+              </p-select>
+          </div>
+          
+          <div class="filter-actions">
+            <p-button 
+              label="Limpiar Filtros" 
+              icon="pi pi-refresh" 
+              severity="secondary" 
+              [outlined]="true"
+              (click)="clearFilters()">
+            </p-button>
+          </div>
+        </div>
+
+        <!-- Tabla de resumen -->
+        <div class="summary-section">
+          <p-card>
+            <ng-template pTemplate="header">
+              <div class="summary-header">
+                <i class="pi pi-chart-bar"></i>
+                Resumen de Tareas
+              </div>
+            </ng-template>
+            <div class="summary-content">
+              <div class="summary-item">
+                <span class="summary-label">Total:</span>
+                <span class="summary-value">{{ filteredTasks.length }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">En Progreso:</span>
+                <span class="summary-value">{{ kanbanColumns[0].tasks.length }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">En Revisión:</span>
+                <span class="summary-value">{{ kanbanColumns[1].tasks.length }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Completadas:</span>
+                <span class="summary-value">{{ kanbanColumns[2].tasks.length }}</span>
+              </div>
+              <div class="summary-item">
+                <span class="summary-label">Pausadas:</span>
+                <span class="summary-value">{{ kanbanColumns[3].tasks.length }}</span>
+              </div>
+            </div>
+          </p-card>
+        </div>
+
+        <!-- Vista Kanban -->
+        <div class="kanban-board">
+          <div class="kanban-column" *ngFor="let column of kanbanColumns">
+            <div class="column-header" [style.background-color]="column.color">
+              <h3 class="column-title">{{ column.title }}</h3>
+              <span class="column-count">{{ column.tasks.length }}</span>
+            </div>
+            
+            <div class="column-content">
+              <div class="task-card" *ngFor="let task of column.tasks">
+                <div class="task-header">
+                  <h4 class="task-title">{{ task.name }}</h4>
+                  <div class="task-actions">
+                    <button 
+                      pButton 
+                      type="button" 
+                      icon="pi pi-pencil" 
+                      class="p-button-text p-button-sm"
+                      (click)="editTask(task)"
+                      pTooltip="Editar tarea">
+                    </button>
+                    <button 
+                      pButton 
+                      type="button" 
+                      icon="pi pi-trash" 
+                      class="p-button-text p-button-sm p-button-danger"
+                      (click)="deleteTask(task)"
+                      pTooltip="Eliminar tarea">
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="task-body" *ngIf="task.description">
+                  <p class="task-description">{{ task.description }}</p>
+                </div>
+                
+                <div class="task-footer">
+                  <div class="task-meta">
+                    <span class="task-creator" *ngIf="task.created_by_username">
+                      <i class="pi pi-user"></i>
+                      {{ task.created_by_username }}
+                    </span>
+                    <span class="task-date" *ngIf="task.created_at">
+                      <i class="pi pi-calendar"></i>
+                      {{ task.created_at | date:'short' }}
+                    </span>
+                  </div>
+                  
+                  <div class="task-deadline" *ngIf="task.deadline">
+                    <i class="pi pi-clock"></i>
+                    <span [class.overdue]="isOverdue(task.deadline)">
+                      {{ task.deadline | date:'short' }}
+                    </span>
+                  </div>
+                </div>
+                
+                  <!-- Dropdown para cambiar estado - ACTUALIZADO A SELECT -->
+                <div class="task-status-change">
+                    <p-select 
+                    [ngModel]="task.status"
+                    [options]="[
+                      {label: 'En Progreso', value: 'In Progress'},
+                      {label: 'En Revisión', value: 'Revision'},
+                      {label: 'Completada', value: 'Completed'},
+                      {label: 'Pausada', value: 'Paused'}
+                    ]"
+                    optionLabel="label"
+                    optionValue="value"
+                    placeholder="Cambiar estado"
+                    appendTo="body"
+                    [autoZIndex]="true"
+                    [baseZIndex]="9996"
+                    styleClass="custom-select-kanban"
+                    [panelStyleClass]="'custom-select-panel'"
+                    [scrollHeight]="'200px'"
+                    (onChange)="updateTaskStatus(task, $event.value)">
+                    </p-select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    <!-- Tab: Gestión de Usuarios (solo para admin) -->
+      <div class="tab-panel" *ngIf="activeTabIndex === 1">
+      <div class="users-container">
+        <div class="section-header">
+          <h2>Gestión de Usuarios y Roles</h2>
+          <p>Administra los roles de los usuarios del sistema</p>
+        </div>
+
+        <p-table 
+          [value]="users" 
+          [paginator]="true" 
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          responsiveLayout="scroll"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} usuarios"
+          [rowsPerPageOptions]="[5, 10, 25]">
+          
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Usuario</th>
+              <th>Email</th>
+              <th>Rol Actual</th>
+              <th>Fecha de Registro</th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="body" let-user>
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.username }}</td>
+              <td>{{ user.email }}</td>
+              <td>
+                <span class="role-badge" [style.background-color]="getRoleColor(user.role)">
+                  {{ getRoleName(user.role) }}
+                </span>
+              </td>
+              <td>{{ user.created_at | date:'short' }}</td>
+              <td>
+                <div class="action-buttons">
+                  <p-button 
+                    label="Cambiar Rol" 
+                    icon="pi pi-user-edit" 
+                    severity="info" 
+                    [outlined]="true"
+                    size="small"
+                    (click)="openUserRoleDialog(user)">
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="6" class="text-center">No hay usuarios registrados</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      </div>
+
+    <!-- Tab: Lista de Tareas -->
+      <div class="tab-panel" *ngIf="activeTabIndex === 2">
+      <div class="tasks-list-container">
+        <div class="section-header">
+          <h2>Lista Completa de Tareas</h2>
+          <p>Vista detallada de todas las tareas del sistema</p>
+        </div>
+
+        <p-table 
+          [value]="filteredTasks" 
+          [paginator]="true" 
+          [rows]="10"
+          [showCurrentPageReport]="true"
+          responsiveLayout="scroll"
+          currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} tareas"
+          [rowsPerPageOptions]="[5, 10, 25]">
+          
+          <ng-template pTemplate="header">
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Estado</th>
+              <th>Creado por</th>
+              <th>Fecha Límite</th>
+              <th>Acciones</th>
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="body" let-task>
+            <tr>
+              <td>{{ task.id }}</td>
+              <td>{{ task.name }}</td>
+              <td>{{ task.description || 'Sin descripción' }}</td>
+              <td>
+                <span class="status-badge" [style.background-color]="getStatusColor(task.status)">
+                  <i [class]="getStatusIcon(task.status)"></i>
+                  {{ task.status }}
+                </span>
+              </td>
+              <td>{{ task.created_by_username || 'N/A' }}</td>
+              <td>
+                <span *ngIf="task.deadline" [class.overdue]="isOverdue(task.deadline)">
+                  {{ task.deadline | date:'short' }}
+                </span>
+                <span *ngIf="!task.deadline" class="no-deadline">Sin fecha límite</span>
+              </td>
+              <td>
+                <div class="action-buttons">
+                  <p-button 
+                    icon="pi pi-pencil" 
+                    severity="info" 
+                    [outlined]="true"
+                    size="small"
+                    (click)="editTask(task)"
+                    pTooltip="Editar tarea">
+                  </p-button>
+                  <p-button 
+                    icon="pi pi-trash" 
+                    severity="danger" 
+                    [outlined]="true"
+                    size="small"
+                    (click)="deleteTask(task)"
+                    pTooltip="Eliminar tarea">
+                  </p-button>
+                </div>
+              </td>
+            </tr>
+          </ng-template>
+          
+          <ng-template pTemplate="emptymessage">
+            <tr>
+              <td colspan="7" class="text-center">No hay tareas disponibles</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Dialog para crear/editar tarea -->
+<p-dialog 
+  [(visible)]="taskDialogVisible" 
+  [header]="isEditing ? 'Editar Tarea' : 'Nueva Tarea'"
+  [modal]="true" 
+  [style]="{width: '50vw', 'min-height': '600px'}"
+  [draggable]="false" 
+  [resizable]="false"
+  [dismissableMask]="false"
+  styleClass="task-dialog">
+  
+  <form [formGroup]="taskForm" (ngSubmit)="saveTask()" class="task-form">
+    <div class="form-row">
+      <div class="form-field">
+        <label for="taskName" class="form-label">Nombre de la tarea *</label>
+        <input 
+          id="taskName" 
+          pInputText 
+          formControlName="name"
+          placeholder="Ingresa el nombre de la tarea"
+          class="form-input" />
+        <small 
+          class="p-error" 
+          *ngIf="taskName?.invalid && (taskName?.dirty || taskName?.touched)">
+          <span *ngIf="taskName?.errors?.['required']">El nombre es requerido</span>
+          <span *ngIf="taskName?.errors?.['minlength']">Mínimo 3 caracteres</span>
+        </small>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="taskDescription" class="form-label">Descripción</label>
+        <textarea 
+          id="taskDescription" 
+          pInputTextarea 
+          formControlName="description"
+          [rows]="3"
+          placeholder="Describe la tarea (opcional)"
+          class="form-textarea">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-field">
+        <label for="taskDeadline" class="form-label">Fecha límite</label>
+        <p-datePicker 
+          id="taskDeadline" 
+          formControlName="deadline"
+          [showTime]="true"
+          [showSeconds]="false"
+          dateFormat="dd/mm/yy"
+          timeFormat="24"
+          placeholder="DD/MM/AAAA HH:MM"
+          [minDate]="currentDate"
+          [touchUI]="false"
+          [showIcon]="true"
+          [readonlyInput]="true"
+          [keepInvalid]="false"
+          appendTo="body"
+          icon="pi pi-calendar"
+          inputId="deadline-input"
+          styleClass="custom-datepicker"
+          [panelStyleClass]="'custom-datepicker-panel'"
+          [style]="{'z-index': '9999'}">
+        </p-datePicker>
+        
+        <!-- Mostrar valor seleccionado -->
+        <div class="selected-date" *ngIf="getDeadlineValue()">
+          <small class="text-info">
+            <i class="pi pi-calendar-check"></i>
+            Fecha seleccionada: {{ getDeadlineValue() }}
+          </small>
+        </div>
+        
+        <!-- Mostrar errores de validación -->
+        <small class="p-error" *ngIf="getDeadlineError()">
+          <i class="pi pi-exclamation-triangle"></i>
+          {{ getDeadlineError() }}
+        </small>
+      </div>
+      
+      <div class="form-field">
+        <label for="taskStatus" class="form-label">Estado *</label>
+        <p-select 
+          id="taskStatus" 
+          formControlName="status"
+          [options]="[
+            {label: 'En Progreso', value: 'In Progress'},
+            {label: 'En Revisión', value: 'Revision'},
+            {label: 'Completada', value: 'Completed'},
+            {label: 'Pausada', value: 'Paused'}
+          ]"
+          optionLabel="label"
+          optionValue="value"
+          placeholder="Selecciona el estado"
+          appendTo="body"
+          [autoZIndex]="true"
+          [baseZIndex]="9998"
+          styleClass="custom-select"
+          [panelStyleClass]="'custom-select-panel'"
+          [scrollHeight]="'200px'">
+        </p-select>
+        <small 
+          class="p-error" 
+          *ngIf="taskStatus?.invalid && (taskStatus?.dirty || taskStatus?.touched)">
+          <span *ngIf="taskStatus?.errors?.['required']">El estado es requerido</span>
+        </small>
+      </div>
+    </div>
+  </form>
+  
+  <ng-template pTemplate="footer">
+    <p-button 
+      label="Cancelar" 
+      icon="pi pi-times" 
+      severity="secondary" 
+      [outlined]="true"
+      (click)="taskDialogVisible = false">
+    </p-button>
+    <p-button 
+      label="Guardar" 
+      icon="pi pi-check" 
+      severity="primary"
+      [disabled]="taskForm.invalid"
+      (click)="saveTask()">
+    </p-button>
+  </ng-template>
+</p-dialog>
+
+<!-- Dialog para cambiar rol de usuario -->
+<p-dialog 
+  [(visible)]="userRoleDialogVisible" 
+  header="Cambiar Rol de Usuario"
+  [modal]="true" 
+  [style]="{width: '40vw'}"
+  [draggable]="false" 
+  [resizable]="false"
+  [dismissableMask]="false"
+  styleClass="user-role-dialog">
+  
+  <form [formGroup]="userRoleForm" (ngSubmit)="updateUserRole()" class="user-role-form">
+    <div class="form-field">
+      <label class="form-label">Usuario</label>
+      <input 
+        pInputText 
+        [value]="selectedUser?.username"
+        readonly
+        class="form-input readonly" />
+    </div>
+    
+    <div class="form-field">
+      <label for="roleSelect" class="form-label">Nuevo Rol *</label>
+      <p-select 
+        id="roleSelect" 
+        formControlName="role_id"
+        [options]="roles"
+        optionLabel="nombre"
+        optionValue="id"
+        placeholder="Selecciona el nuevo rol"
+        appendTo="body"
+        [autoZIndex]="true"
+        [baseZIndex]="9997"
+        styleClass="custom-select"
+        [panelStyleClass]="'custom-select-panel'"
+        [scrollHeight]="'200px'">
+      </p-select>
+      <small 
+        class="p-error" 
+        *ngIf="userRoleForm.get('role_id')?.invalid && (userRoleForm.get('role_id')?.dirty || userRoleForm.get('role_id')?.touched)">
+        <span *ngIf="userRoleForm.get('role_id')?.errors?.['required']">El rol es requerido</span>
+      </small>
+    </div>
+  </form>
+  
+  <ng-template pTemplate="footer">
+    <p-button 
+      label="Cancelar" 
+      icon="pi pi-times" 
+      severity="secondary" 
+      [outlined]="true"
+      (click)="userRoleDialogVisible = false">
+    </p-button>
+    <p-button 
+      label="Actualizar" 
+      icon="pi pi-check" 
+      severity="primary"
+      [disabled]="userRoleForm.invalid"
+      (click)="updateUserRole()">
+    </p-button>
+  </ng-template>
+</p-dialog>

@@ -1,0 +1,140 @@
+<!-- register.component.html -->
+<p-messages 
+  [(value)]="messages" 
+  [enableService]="false" 
+  [closable]="true">
+</p-messages>
+
+<div class="register-container">
+  <p-card [style]="{ width: '28rem', overflow: 'hidden' }">
+    <!-- Header con silueta -->
+    <ng-template #header>
+      <div class="card-header">
+        <i class="pi pi-user-plus" style="font-size: 4rem; color: #ffffff;"></i>
+      </div>
+    </ng-template>
+
+    <!-- Título y subtítulo -->
+    <ng-template #title>Crear Cuenta</ng-template>
+    <ng-template #subtitle>Completa tus datos para registrarte</ng-template>
+
+    <!-- Formulario -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+      
+      <!-- Campo de Username -->
+      <div class="input-group">
+        <label for="username" class="input-label">Nombre de usuario</label>
+        <input 
+          id="username" 
+          pInputText 
+          formControlName="username"
+          type="text" 
+          placeholder="Ingresa tu nombre de usuario"
+          class="input-field" />
+        <small 
+          class="p-error" 
+          *ngIf="username?.invalid && (username?.dirty || username?.touched)">
+          <span *ngIf="username?.errors?.['required']">El nombre de usuario es requerido</span>
+          <span *ngIf="username?.errors?.['minlength']">Mínimo 3 caracteres</span>
+          <span *ngIf="username?.errors?.['maxlength']">Máximo 30 caracteres</span>
+          <span *ngIf="username?.errors?.['pattern']">Debe empezar con letra y solo usar letras, números y guiones bajos</span>
+        </small>
+      </div>
+
+      <!-- Campo de Email -->
+      <div class="input-group">
+        <label for="email" class="input-label">Correo electrónico</label>
+        <input 
+          id="email" 
+          pInputText 
+          formControlName="email"
+          type="email" 
+          placeholder="Ingresa tu correo electrónico"
+          class="input-field" />
+        <small 
+          class="p-error" 
+          *ngIf="email?.invalid && (email?.dirty || email?.touched)">
+          <span *ngIf="email?.errors?.['required']">El correo es requerido</span>
+          <span *ngIf="email?.errors?.['email']">Formato de correo inválido</span>
+          <span *ngIf="email?.errors?.['maxlength']">Máximo 100 caracteres</span>
+          <span *ngIf="email?.errors?.['pattern']">Formato de correo inválido</span>
+        </small>
+      </div>
+
+      <!-- Campo de Contraseña -->
+      <div class="input-group">
+        <label for="password" class="input-label">Contraseña</label>
+        <p-password 
+          id="password" 
+          formControlName="password"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Ingresa tu contraseña"
+          inputStyleClass="input-field">
+        </p-password>
+        <small 
+          class="p-error" 
+          *ngIf="password?.invalid && (password?.dirty || password?.touched)">
+          <span *ngIf="password?.errors?.['required']">La contraseña es requerida</span>
+          <span *ngIf="password?.errors?.['minlength']">Mínimo 8 caracteres</span>
+          <span *ngIf="password?.errors?.['maxlength']">Máximo 50 caracteres</span>
+          <span *ngIf="password?.errors?.['pattern']">Debe contener al menos: 1 mayúscula, 1 minúscula, 1 número y 1 carácter especial (&#64;$!%*?&)</span>
+        </small>
+        <!-- Mensaje personalizado cuando el campo está vacío -->
+        <small 
+          class="p-error" 
+          *ngIf="password?.value === '' && (password?.dirty || password?.touched)">
+          La contraseña es requerida
+        </small>
+      </div>
+
+      <!-- Campo de Confirmar Contraseña -->
+      <div class="input-group">
+        <label for="confirmPassword" class="input-label">Confirmar contraseña</label>
+        <p-password 
+          id="confirmPassword" 
+          formControlName="confirmPassword"
+          [toggleMask]="true"
+          [feedback]="false"
+          placeholder="Confirma tu contraseña"
+          inputStyleClass="input-field">
+        </p-password>
+        <small 
+          class="p-error" 
+          *ngIf="confirmPassword?.invalid && (confirmPassword?.dirty || confirmPassword?.touched)">
+          <span *ngIf="confirmPassword?.errors?.['required']">Debe confirmar la contraseña</span>
+          <span *ngIf="confirmPassword?.errors?.['passwordMismatch']">Las contraseñas no coinciden</span>
+        </small>
+      </div>
+
+      <!-- Botones -->
+      <div class="button-group">
+        <p-button 
+          label="Cancelar" 
+          severity="secondary" 
+          [outlined]="true" 
+          class="cancel-button"
+          type="button"
+          (click)="goToLogin()" />
+        <p-button 
+          label="Registrarse" 
+          class="register-button"
+          [loading]="isLoading"
+          [disabled]="registerForm.invalid || isLoading"
+          type="submit" />
+      </div>
+    </form>
+  </p-card>
+
+  <!-- Enlace de login -->
+  <div class="login-link">
+    <p>¿Ya tienes cuenta? <a href="#" class="login-btn" (click)="goToLogin()">Inicia sesión aquí</a></p>
+  </div>
+
+  <!-- Mostrar QR de Google Authenticator tras el registro -->
+  <div *ngIf="qrBase64" class="qr-section">
+    <h3>Escanea este código QR con Google Authenticator</h3>
+    <img [src]="'data:image/png;base64,' + qrBase64" alt="QR Google Authenticator" style="max-width: 220px; margin: 1rem auto; display: block;" />
+    <p>Después de escanear, ingresa el código generado en la app para iniciar sesión.</p>
+  </div>
+</div>

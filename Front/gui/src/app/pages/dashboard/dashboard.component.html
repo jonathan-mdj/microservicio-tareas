@@ -1,0 +1,100 @@
+<div class="dashboard-container">
+  <div class="welcome-section">
+    <h1>{{ getGreeting() }}, {{ currentUser?.username }}!</h1>
+    <p class="subtitle">Bienvenido a tu panel de control</p>
+  </div>
+
+  <div class="dashboard-grid">
+    <!-- Tarjeta de bienvenida -->
+    <p-card class="welcome-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-home"></i>
+          <span>Resumen</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="card-content">
+          <p>Rol: <strong>{{ isAdmin ? 'Administrador' : 'Usuario' }}</strong></p>
+          <p>ID de Usuario: {{ currentUser?.id }}</p>
+          <p>Email: {{ currentUser?.username }}</p>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Tarjeta de acciones rápidas -->
+    <p-card class="actions-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-bolt"></i>
+          <span>Acciones Rápidas</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="actions-grid">
+          <button pButton 
+                  label="Ver Tareas" 
+                  icon="pi pi-tasks" 
+                  class="p-button-primary"
+                  routerLink="/tasks">
+          </button>
+          
+          <button pButton 
+                  label="Mi Perfil" 
+                  icon="pi pi-user" 
+                  class="p-button-secondary">
+          </button>
+
+          <button pButton 
+                  *ngIf="isAdmin"
+                  label="Panel Admin" 
+                  icon="pi pi-cog" 
+                  class="p-button-warning"
+                  routerLink="/admin">
+          </button>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Tarjeta de estadísticas -->
+    <p-card class="stats-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-chart-bar"></i>
+          <span>Estadísticas</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="stats-content">
+          <div class="stat-item">
+            <span class="stat-number">0</span>
+            <span class="stat-label">Tareas Pendientes</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-number">0</span>
+            <span class="stat-label">Tareas Completadas</span>
+          </div>
+          <div class="stat-item" *ngIf="isAdmin">
+            <span class="stat-number">0</span>
+            <span class="stat-label">Usuarios Activos</span>
+          </div>
+        </div>
+      </ng-template>
+    </p-card>
+
+    <!-- Tarjeta de notificaciones -->
+    <p-card class="notifications-card">
+      <ng-template pTemplate="header">
+        <div class="card-header">
+          <i class="pi pi-bell"></i>
+          <span>Notificaciones</span>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="content">
+        <div class="notifications-content">
+          <p class="no-notifications">No hay notificaciones nuevas</p>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+</div>
