@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: microservicio-backend
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: python start_render.py
+    healthCheckPath: /health
+    envVars:
+      - key: MONGO_URI_ATLAS
+        sync: false
+      - key: JWT_SECRET_ATLAS  
+        sync: false
+      - key: FLASK_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: 3.12.0

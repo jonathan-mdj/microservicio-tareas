@@ -320,13 +320,68 @@ def info_proxy():
 @app.route('/health', methods=['GET'])
 @limiter.limit("200 per minute")  # Health check más permisivo
 def health_check():
-    """Endpoint de health check para monitoreo"""
-    return jsonify({
-        "status": "healthy",
-        "service": "API Gateway (MongoDB)",
-        "timestamp": datetime.utcnow().isoformat(),
-        "database": "MongoDB"
-    })
+    """Health check endpoint para Render"""
+    try:
+        # Probar conexión a MongoDB Atlas
+        from database_mongo import mongo_db
+        mongo_connected = mongo_db.connect()
+        
+        # Verificar que las colecciones principales existan
+        collections_status = {}
+        if mongo_connected:
+            try:
+                db = mongo_db.db  # Usar el atributo db directamente
+                collections = ['users', 'tasks', 'roles']
+                for collection in collections:
+                    try:
+                        # Intentar contar documentos para verificar que la colección funciona
+                        count = db[collection].count_documents({})
+                        collections_status[collection] = f"OK ({count} docs)"
+                    except Exception as e:
+                        collections_status[collection] = f"Error: {str(e)}"
+            except Exception as e:
+                collections_status = {"error": f"Error accediendo a la base de datos: {str(e)}"}
+        else:
+            collections_status = {"error": "No se pudo conectar a MongoDB Atlas"}
+        
+        # Verificar archivo de logs
+        logs_status = "OK"
+        if not os.path.exists(LOG_FILE):
+            logs_status = "Archivo de logs no encontrado"
+        else:
+            try:
+                with open(LOG_FILE, 'r', encoding='utf-8') as f:
+                    log_lines = len(f.readlines())
+                logs_status = f"OK ({log_lines} líneas)"
+            except Exception as e:
+                logs_status = f"Error leyendo logs: {str(e)}"
+        
+        # Verificar variables de entorno críticas
+        env_status = {
+            "MONGO_URI_ATLAS": "Configurada" if os.getenv('MONGO_URI_ATLAS') else "No configurada",
+            "JWT_SECRET_ATLAS": "Configurado" if os.getenv('JWT_SECRET_ATLAS') else "No configurado",
+            "FLASK_ENV": os.getenv('FLASK_ENV', 'No configurado')
+        }
+        
+        return jsonify({
+            'status': 'healthy' if mongo_connected else 'unhealthy',
+            'message': 'Todos los servicios funcionando' if mongo_connected else 'Problemas de conectividad',
+            'timestamp': datetime.utcnow().isoformat(),
+            'service': 'API Gateway (MongoDB)',
+            'mongodb': 'connected' if mongo_connected else 'disconnected',
+            'collections': collections_status,
+            'logs': logs_status,
+            'environment': env_status,
+            'render_ready': True
+        }), 200 if mongo_connected else 503
+        
+    except Exception as e:
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.utcnow().isoformat(),
+            'render_ready': False
+        }), 500
 
 @app.route('/logs/stats', methods=['GET'])
 @limiter.limit("50 per minute")  # Límite moderado para estadísticas
@@ -462,11 +517,16 @@ def root():
     })
 
 if __name__ == '__main__':
+    # Configuración para desarrollo local vs producción (Render)
+    port = int(os.environ.get('PORT', config.API_GATEWAY_PORT))
+    debug_mode = os.environ.get('FLASK_ENV') != 'production'
+    
     print("=" * 50)
     print("INICIANDO API GATEWAY (MongoDB)")
     print("=" * 50)
-    print(f"Gateway URL: http://localhost:{config.API_GATEWAY_PORT}")
-    print(f"Health Check: http://localhost:{config.API_GATEWAY_PORT}/health")
+    print(f"Gateway URL: http://localhost:{port}")
+    print(f"Health Check: http://localhost:{port}/health")
+    print(f"Environment: {'Production' if not debug_mode else 'Development'}")
     print("=" * 50)
     print("SERVICIOS MONGODB CONFIGURADOS:")
     print(f"   Auth Service:  {AUTH_SERVICE_URL}")
@@ -475,4 +535,11 @@ if __name__ == '__main__':
     print("=" * 50)
     print(f"CORS configurado para: {config.CORS_ORIGINS}")
     print("=" * 50)
-    app.run(host='0.0.0.0', port=config.API_GATEWAY_PORT, debug=config.DEBUG)
+    
+    # En producción (Render), usar gunicorn
+    if os.environ.get('PORT'):
+        print("🚀 Modo producción detectado - Usar gunicorn")
+        print("   Comando: gunicorn --bind 0.0.0.0:PORT api_gateway.app_mongo:app")
+    else:
+        print("🔧 Modo desarrollo - Usar Flask dev server")
+        app.run(host='0.0.0.0', port=port, debug=debug_mode)

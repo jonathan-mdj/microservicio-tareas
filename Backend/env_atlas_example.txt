@@ -1,0 +1,29 @@
+# MongoDB Atlas Configuration - EJEMPLO
+# Copia este archivo como .env.atlas y llena los valores reales
+
+# MongoDB Atlas URI (reemplaza <password> con tu password real)
+MONGO_URI_ATLAS=mongodb+srv://microservicio-user:<password>@microservicio-cluster.xxxxx.mongodb.net/?retryWrites=true&w=majority
+
+# MongoDB Atlas Credentials
+ATLAS_CLUSTER_NAME=microservicio-cluster
+ATLAS_USERNAME=microservicio-user
+ATLAS_PASSWORD=<tu_password_aqui>
+
+# JWT Secret para producción (CAMBIAR ESTO!)
+JWT_SECRET_ATLAS=tu_jwt_secret_super_seguro_para_produccion_cambiar_esto
+
+# Service Ports
+AUTH_SERVICE_PORT=5001
+USER_SERVICE_PORT=5002
+TASK_SERVICE_PORT=5003
+API_GATEWAY_PORT=4000
+
+# Environment
+FLASK_ENV=production
+DEBUG=false
+
+# INSTRUCCIONES:
+# 1. Copia este archivo como .env.atlas
+# 2. Reemplaza <password> con tu password real de MongoDB Atlas
+# 3. Cambia el JWT_SECRET_ATLAS por una clave segura
+# 4. Actualiza la URI completa con tu cluster real
