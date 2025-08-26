@@ -21,7 +21,7 @@ def signal_handler(signum, frame):
 def check_mongodb_connection():
     """Verificar conexión a MongoDB Atlas"""
     try:
-        from database_mongo import mongo_db
+        from database_mongo_render import mongo_db
         connected = mongo_db.connect()
         if connected:
             print("✅ Conexión a MongoDB Atlas exitosa")

@@ -323,8 +323,13 @@ def health_check():
     """Health check endpoint para Render"""
     try:
         # Probar conexión a MongoDB Atlas
-        from database_mongo import mongo_db
-        mongo_connected = mongo_db.connect()
+        try:
+            from database_mongo_render import mongo_db
+            mongo_connected = mongo_db.connect()
+        except ImportError:
+            # Fallback a la configuración local si no está disponible
+            from database_mongo import mongo_db
+            mongo_connected = mongo_db.connect()
         
         # Verificar que las colecciones principales existan
         collections_status = {}
