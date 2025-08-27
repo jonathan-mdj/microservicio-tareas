@@ -396,12 +396,12 @@ def health():
     except:
         db_status = "DOWN"
     
-    return jsonify({
-        "status": "UP" if db_status == "UP" else "DEGRADED",
-        "service": "Task Service (MongoDB)",
-        "database": db_status,
-        "port": config.TASK_SERVICE_PORT
-    }), 200
+        return jsonify({
+            "status": "UP" if db_status == "UP" else "DEGRADED",
+            "service": "Task Service (MongoDB)",
+            "database": db_status,
+            "port": os.environ.get('PORT', 'N/A')
+        }), 200
 
 if __name__ == '__main__':
     print("=" * 50)

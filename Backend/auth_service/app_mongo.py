@@ -267,12 +267,12 @@ def health():
     except:
         db_status = "DOWN"
     
-    return jsonify({
-        "status": "UP" if db_status == "UP" else "DEGRADED",
-        "service": "Auth Service (MongoDB)",
-        "database": db_status,
-        "port": config.AUTH_SERVICE_PORT
-    }), 200
+        return jsonify({
+            "status": "UP" if db_status == "UP" else "DEGRADED",
+            "service": "Auth Service (MongoDB)",
+            "database": db_status,
+            "port": os.environ.get('PORT', 'N/A')
+        }), 200
 
 @app.route('/users', methods=['GET', 'OPTIONS'])
 def get_users():

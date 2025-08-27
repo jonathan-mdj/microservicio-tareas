@@ -348,12 +348,12 @@ def health():
     except:
         db_status = "DOWN"
     
-    return jsonify({
-        "status": "UP" if db_status == "UP" else "DEGRADED",
-        "service": "User Service (MongoDB)",
-        "database": db_status,
-        "port": config.USER_SERVICE_PORT
-    }), 200
+        return jsonify({
+            "status": "UP" if db_status == "UP" else "DEGRADED",
+            "service": "User Service (MongoDB)",
+            "database": db_status,
+            "port": os.environ.get('PORT', 'N/A')
+        }), 200
 
 @app.route('/roles', methods=['GET', 'OPTIONS'])
 def get_roles():
