@@ -329,76 +329,7 @@ def info_proxy():
     """Proxy para información del sistema del Task Service MongoDB"""
     return proxy_request(TASK_SERVICE_URL, 'info')
 
-@app.route('/health', methods=['GET'])
-@limiter.limit("200 per minute")  # Health check más permisivo
-def health_check():
-    """Health check endpoint para Render"""
-    try:
-        # Probar conexión a MongoDB Atlas
-        try:
-            from database_mongo_render import mongo_db
-            mongo_connected = mongo_db.connect()
-        except ImportError:
-            # Fallback a la configuración local si no está disponible
-            from database_mongo import mongo_db
-            mongo_connected = mongo_db.connect()
-        
-        # Verificar que las colecciones principales existan
-        collections_status = {}
-        if mongo_connected:
-            try:
-                db = mongo_db.db  # Usar el atributo db directamente
-                collections = ['users', 'tasks', 'roles']
-                for collection in collections:
-                    try:
-                        # Intentar contar documentos para verificar que la colección funciona
-                        count = db[collection].count_documents({})
-                        collections_status[collection] = f"OK ({count} docs)"
-                    except Exception as e:
-                        collections_status[collection] = f"Error: {str(e)}"
-            except Exception as e:
-                collections_status = {"error": f"Error accediendo a la base de datos: {str(e)}"}
-        else:
-            collections_status = {"error": "No se pudo conectar a MongoDB Atlas"}
-        
-        # Verificar archivo de logs
-        logs_status = "OK"
-        if not os.path.exists(LOG_FILE):
-            logs_status = "Archivo de logs no encontrado"
-        else:
-            try:
-                with open(LOG_FILE, 'r', encoding='utf-8') as f:
-                    log_lines = len(f.readlines())
-                logs_status = f"OK ({log_lines} líneas)"
-            except Exception as e:
-                logs_status = f"Error leyendo logs: {str(e)}"
-        
-        # Verificar variables de entorno críticas
-        env_status = {
-            "MONGO_URI_ATLAS": "Configurada" if os.getenv('MONGO_URI_ATLAS') else "No configurada",
-            "JWT_SECRET_ATLAS": "Configurado" if os.getenv('JWT_SECRET_ATLAS') else "No configurado",
-            "FLASK_ENV": os.getenv('FLASK_ENV', 'No configurado')
-        }
-        
-        return jsonify({
-            'status': 'healthy' if mongo_connected else 'unhealthy',
-            'message': 'Todos los servicios funcionando' if mongo_connected else 'Problemas de conectividad',
-            'timestamp': datetime.utcnow().isoformat(),
-            'service': 'API Gateway (MongoDB)',
-            'mongodb': 'connected' if mongo_connected else 'disconnected',
-            'collections': collections_status,
-            'logs': logs_status,
-            'environment': env_status,
-            'render_ready': True
-        }), 200 if mongo_connected else 503
-        
-    except Exception as e:
-        return jsonify({
-            'status': 'unhealthy',
-            'error': str(e),
-            'timestamp': datetime.utcnow().isoformat(),
-            'render_ready': False
-        }), 500
+# Health check endpoint eliminado (duplicado) - se mantiene el de abajo
 
 @app.route('/logs/stats', methods=['GET'])
 @limiter.limit("50 per minute")  # Límite moderado para estadísticas
@@ -523,6 +454,9 @@ def health_check():
         # Verificar configuración
         print(f"🔍 [HEALTH] Verificando configuración...")
         print(f"   FLASK_ENV: {os.getenv('FLASK_ENV')}")
+        print(f"   PORT: {os.getenv('PORT')}")
+        print(f"   Tipo de config: {type(config).__name__}")
+        print(f"   Módulo de config: {config.__module__}")
         print(f"   CORS Origins: {config.CORS_ORIGINS}")
         
         # Probar conexión a MongoDB
@@ -537,6 +471,9 @@ def health_check():
             'status': 'healthy',
             'message': 'API Gateway funcionando correctamente',
             'environment': os.getenv('FLASK_ENV', 'unknown'),
+            'port': os.getenv('PORT', 'unknown'),
+            'config_type': type(config).__name__,
+            'config_module': config.__module__,
             'mongodb': mongodb_status,
             'cors_origins': config.CORS_ORIGINS,
             'timestamp': datetime.utcnow().isoformat()
