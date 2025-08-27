@@ -96,7 +96,6 @@ def after_request(response):
     # Solo permitir orígenes específicos
     allowed_origins = [
         "https://microservicio-extraordinario.vercel.app",
-        "https://microservicio-extraordinario-*.vercel.app",
         "http://localhost:3000",
         "http://localhost:5173"
     ]

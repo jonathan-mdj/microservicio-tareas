@@ -27,7 +27,6 @@ class Config:
     # CORS Configuration
     CORS_ORIGINS = [
         "https://microservicio-extraordinario.vercel.app",
-        "https://microservicio-extraordinario-*.vercel.app",
         "http://localhost:3000",
         "http://localhost:5173"
     ]
