@@ -35,6 +35,27 @@
       "dest": "/$1"
     },
     {
+      "src": "/(.*\\.woff2)",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "font/woff2"
+      }
+    },
+    {
+      "src": "/(.*\\.woff)",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "font/woff"
+      }
+    },
+    {
+      "src": "/(.*\\.ttf)",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "font/ttf"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
