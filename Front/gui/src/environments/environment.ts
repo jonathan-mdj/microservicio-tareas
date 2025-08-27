@@ -1,12 +1,27 @@
-// environment.ts - DESARROLLO LOCAL
-// Este archivo se usa SOLO cuando se hace build con --configuration development
+// environment.ts - DETECCIÓN AUTOMÁTICA
+// Este archivo detecta automáticamente si está en producción o desarrollo
+
+// Detectar si estamos en producción
+const isProduction = window.location.hostname !== 'localhost' && 
+                    window.location.hostname !== '127.0.0.1' &&
+                    !window.location.hostname.includes('localhost');
+
+// Detectar si estamos en Vercel
+const isVercel = window.location.hostname.includes('vercel.app') || 
+                 window.location.hostname.includes('onrender.com');
 
 export const environment = {
-  production: false,
-  apiUrl: 'http://localhost:4000',
-  // Forzar el uso de desarrollo
-  isProduction: false,
+  production: isProduction || isVercel,
+  apiUrl: (isProduction || isVercel) 
+    ? 'https://microservicio-backend.onrender.com' 
+    : 'http://localhost:4000',
+  // Detección automática
+  isProduction: isProduction || isVercel,
   // Log para verificar que se está usando este archivo
   buildTime: new Date().toISOString(),
-  buildConfig: 'development'
+  buildConfig: (isProduction || isVercel) ? 'production' : 'development',
+  // Información de detección
+  detectedHostname: window.location.hostname,
+  isVercel: isVercel,
+  isLocalhost: !isProduction && !isVercel
 };

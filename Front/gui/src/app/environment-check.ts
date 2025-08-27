@@ -11,6 +11,9 @@ export function logEnvironmentInfo() {
   console.log('⚙️ Production:', environment.production);
   console.log('🏗️ Build Config:', environment.buildConfig);
   console.log('⏰ Build Time:', environment.buildTime);
+  console.log('🌍 Hostname detectado:', environment.detectedHostname);
+  console.log('🚀 Es Vercel:', environment.isVercel);
+  console.log('🏠 Es localhost:', environment.isLocalhost);
   console.log('==========================================');
   
   // Verificar que se esté usando el environment correcto
@@ -20,5 +23,12 @@ export function logEnvironmentInfo() {
     console.error('🚨 ERROR: Se está usando environment de PRODUCCIÓN en DESARROLLO');
   } else {
     console.log('✅ Environment configurado correctamente');
+  }
+  
+  // Verificación adicional para Vercel
+  if (environment.isVercel && environment.apiUrl.includes('localhost')) {
+    console.error('🚨 CRÍTICO: Vercel está usando localhost!');
+  } else if (environment.isVercel) {
+    console.log('✅ Vercel configurado correctamente para producción');
   }
 }

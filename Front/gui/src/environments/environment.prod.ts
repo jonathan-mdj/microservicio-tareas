@@ -1,5 +1,5 @@
-// environment.prod.ts - PRODUCCIÓN
-// Este archivo se usa SOLO cuando se hace build con --configuration production
+ // environment.prod.ts - PRODUCCIÓN FORZADA
+// Este archivo SIEMPRE se usa en producción, sin importar la configuración
 
 export const environment = {
   production: true,
@@ -8,5 +8,12 @@ export const environment = {
   isProduction: true,
   // Log para verificar que se está usando este archivo
   buildTime: new Date().toISOString(),
-  buildConfig: 'production'
+  buildConfig: 'production',
+  // FORZAR URL de producción
+  forceProductionUrl: true
 };
+
+// Verificación adicional
+if (environment.apiUrl.includes('localhost')) {
+  throw new Error('🚨 CRÍTICO: environment.prod.ts contiene localhost!');
+}
