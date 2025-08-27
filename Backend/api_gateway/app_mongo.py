@@ -112,9 +112,9 @@ def after_request(response):
 
 
 # URLs de los microservicios MongoDB
-AUTH_SERVICE_URL = getattr(config, 'AUTH_SERVICE_URL', f'http://localhost:{config.AUTH_SERVICE_PORT}')
-USER_SERVICE_URL = getattr(config, 'USER_SERVICE_URL', f'http://localhost:{config.USER_SERVICE_PORT}')
-TASK_SERVICE_URL = getattr(config, 'TASK_SERVICE_URL', f'http://localhost:{config.TASK_SERVICE_PORT}')
+AUTH_SERVICE_URL = getattr(config, 'AUTH_SERVICE_URL', 'http://localhost:5001')
+USER_SERVICE_URL = getattr(config, 'USER_SERVICE_URL', 'http://localhost:5002')
+TASK_SERVICE_URL = getattr(config, 'TASK_SERVICE_URL', 'http://localhost:5003')
 
 print(f"[GATEWAY] URLs de servicios MongoDB:")
 print(f"   Auth Service: {AUTH_SERVICE_URL}")
