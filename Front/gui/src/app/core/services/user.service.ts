@@ -51,7 +51,7 @@ export interface UpdateUserRequest {
   providedIn: 'root'
 })
 export class UserService {
-  private readonly API_URL = 'http://localhost:4000';
+  private readonly API_URL = environment.apiUrl;
 
   constructor(private readonly http: HttpClient) {}
 

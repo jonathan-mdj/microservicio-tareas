@@ -49,7 +49,7 @@ export interface SystemInfo {
   providedIn: 'root'
 })
 export class TaskService {
-  private readonly API_URL = 'http://localhost:4000'; // Ahora apunta al API Gateway
+  private readonly API_URL = environment.apiUrl; // Ahora apunta al API Gateway
 
   constructor(
     private readonly http: HttpClient,
