@@ -30,8 +30,9 @@ class ProductionConfig:
     # CORS Origins para producción
     CORS_ORIGINS = [
         'http://localhost:4200',  # Desarrollo local
-        'https://tu-frontend-vercel.vercel.app',  # Frontend en Vercel (actualizar)
-        'https://tu-dominio.com'  # Tu dominio personalizado si lo tienes
+        'https://microservicio-tareas-kviu.vercel.app',  # Tu dominio real de Vercel
+        'https://*.vercel.app',  # Permitir cualquier subdominio de Vercel
+        'https://*.onrender.com'  # Permitir cualquier subdominio de Render
     ]
     
     # MongoDB Atlas specific settings

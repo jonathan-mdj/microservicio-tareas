@@ -12,7 +12,12 @@ from datetime import datetime
 import time
 import jwt
 from logging.handlers import RotatingFileHandler
-from config import config
+# Importar configuración según el entorno
+import os
+if os.getenv('FLASK_ENV') == 'production':
+    from config_production import production_config as config
+else:
+    from config import config
 
 app = Flask(__name__)
 

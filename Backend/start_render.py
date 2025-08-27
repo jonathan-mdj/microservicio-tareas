@@ -13,6 +13,10 @@ from dotenv import load_dotenv
 if os.path.exists('.env.atlas'):
     load_dotenv('.env.atlas')
 
+# Configurar variables de entorno críticas para producción
+os.environ['FLASK_ENV'] = 'production'
+os.environ['DEBUG'] = 'false'
+
 def signal_handler(signum, frame):
     """Manejar señales de terminación"""
     print(f"\n🛑 Señal {signum} recibida. Cerrando servicios...")
