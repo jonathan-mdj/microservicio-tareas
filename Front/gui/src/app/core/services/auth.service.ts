@@ -40,6 +40,23 @@ export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'user_data';
   
+  constructor(
+    private readonly http: HttpClient,
+    private readonly router: Router
+  ) {
+    // Log para verificar qué environment se está usando
+    console.log('🔍 AuthService - Environment config:', {
+      apiUrl: environment.apiUrl,
+      production: environment.production,
+      isProduction: environment.isProduction,
+      buildConfig: environment.buildConfig,
+      buildTime: environment.buildTime
+    });
+    
+    // Cargar datos del usuario desde localStorage al inicializar
+    this.loadUserFromStorage();
+  }
+  
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 
@@ -52,13 +69,7 @@ export class AuthService {
     })
   );
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly router: Router
-  ) {
-    // Cargar datos del usuario desde localStorage al inicializar
-    this.loadUserFromStorage();
-  }
+
 
   private loadUserFromStorage(): void {
     const token = localStorage.getItem(this.TOKEN_KEY);
