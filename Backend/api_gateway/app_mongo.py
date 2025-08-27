@@ -1,7 +1,6 @@
 # api_gateway/app_mongo.py
 from flask import Flask, jsonify, request, g, make_response
 import requests
-from flask_cors import CORS
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from requests.exceptions import ConnectionError, Timeout, RequestException
@@ -72,58 +71,45 @@ limiter = Limiter(
     strategy="fixed-window"
 )
 
-# Configuración CORS más específica y robusta
+# Configuración CORS con headers manuales para máxima compatibilidad
 print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
 print(f"🔍 [GATEWAY] Tipo de config: {type(config).__name__}")
 print(f"🔍 [GATEWAY] Archivo config: {config.__module__}")
 
-# Configurar CORS manualmente para asegurar que funcione
+# Configurar CORS manualmente para evitar problemas con Flask-CORS
 @app.before_request
-def handle_cors():
-    """Manejar CORS manualmente antes de cada request"""
+def handle_preflight():
+    """Manejar preflight OPTIONS request"""
+    if request.method == "OPTIONS":
+        response = make_response()
+        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin'))
+        response.headers.add('Access-Control-Allow-Headers', "*")
+        response.headers.add('Access-Control-Allow-Methods', "*")
+        response.headers.add('Access-Control-Allow-Credentials', "true")
+        return response
+
+@app.after_request
+def after_request(response):
+    """Agregar headers CORS después de cada request"""
     origin = request.headers.get('Origin')
     
-    # Log para debug
-    print(f"🔍 [CORS] Request desde: {origin}")
-    print(f"🔍 [CORS] Método: {request.method}")
-    print(f"🔍 [CORS] Endpoint: {request.endpoint}")
+    # Solo permitir orígenes específicos
+    allowed_origins = [
+        'http://localhost:4200',
+        'https://microservicio-tareas-kviu.vercel.app',
+        'https://microservicio-tareas-sofv.vercel.app'
+    ]
     
-    # Verificar si el origen está permitido
-    allowed_origins = config.CORS_ORIGINS
-    is_allowed = False
+    if origin in allowed_origins:
+        response.headers.add('Access-Control-Allow-Origin', origin)
     
-    for allowed_origin in allowed_origins:
-        if allowed_origin == '*' or allowed_origin == origin:
-            is_allowed = True
-            break
-        elif allowed_origin.startswith('https://*.') and origin and origin.startswith(allowed_origin[8:]):
-            is_allowed = True
-            break
+    response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,X-Requested-With")
+    response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
+    response.headers.add('Access-Control-Allow-Credentials', 'true')
     
-    print(f"🔍 [CORS] Origen permitido: {is_allowed}")
-    
-    if is_allowed:
-        response = make_response()
-        response.headers['Access-Control-Allow-Origin'] = origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-        response.headers['Access-Control-Max-Age'] = '3600'
-        
-        print(f"🔍 [CORS] Headers CORS configurados para: {origin}")
-        
-        if request.method == 'OPTIONS':
-            return response
-    
-    return None
+    return response
 
-# Configurar CORS con Flask-CORS como respaldo
-CORS(app, 
-     origins=config.CORS_ORIGINS,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
-     supports_credentials=True,
-     max_age=3600)
+
 
 # URLs de los microservicios MongoDB
 AUTH_SERVICE_URL = f'http://localhost:{config.AUTH_SERVICE_PORT}'
