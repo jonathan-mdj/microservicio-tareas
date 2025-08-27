@@ -565,7 +565,7 @@ body {
 
 /* ===== SOLUCIÓN PARA ERRORES DE FUENTES PRIMEICONS ===== */
 
-/* Fallback para fuentes PrimeIcons */
+/* Fallback para fuentes PrimeIcons desde CDN */
 @font-face {
   font-family: 'primeicons';
   src: url('https://unpkg.com/primeicons@6.0.1/fonts/primeicons.woff2') format('woff2'),
@@ -574,6 +574,18 @@ body {
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+/* Asegurar que PrimeIcons se cargue desde CDN si las fuentes locales fallan */
+.pi {
+  font-family: 'primeicons' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Asegurar que los iconos se muestren correctamente */

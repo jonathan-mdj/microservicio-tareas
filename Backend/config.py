@@ -28,7 +28,9 @@ class Config:
     CORS_ORIGINS = [
         'http://localhost:4200',
         'http://localhost:3000',
-        'https://tu-frontend-vercel.vercel.app'  # Actualizar con tu dominio de Vercel
+        'https://microservicio-tareas-kviu.vercel.app',  # Tu dominio real de Vercel
+        'https://*.vercel.app',  # Permitir cualquier subdominio de Vercel
+        'https://*.onrender.com'  # Permitir cualquier subdominio de Render
     ]
 
 # Instancia global de configuración

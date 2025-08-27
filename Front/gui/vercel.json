@@ -56,6 +56,21 @@
       }
     },
     {
+      "src": "/media/(.*)",
+      "dest": "/media/$1"
+    },
+    {
+      "src": "/fonts/(.*)",
+      "dest": "/fonts/$1"
+    },
+    {
+      "src": "/(.*\\.eot)",
+      "dest": "/$1",
+      "headers": {
+        "Content-Type": "application/vnd.ms-fontobject"
+      }
+    },
+    {
       "src": "/(.*)",
       "dest": "/index.html"
     }
