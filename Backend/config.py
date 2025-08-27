@@ -18,11 +18,16 @@ class Config:
     FLASK_ENV = os.getenv('FLASK_ENV', 'development')
     DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
     
-    # Service Ports
+    # Service Ports para desarrollo local
     AUTH_SERVICE_PORT = int(os.getenv('AUTH_SERVICE_PORT', 5001))
     USER_SERVICE_PORT = int(os.getenv('USER_SERVICE_PORT', 5002))
     TASK_SERVICE_PORT = int(os.getenv('TASK_SERVICE_PORT', 5003))
     API_GATEWAY_PORT = int(os.getenv('API_GATEWAY_PORT', 4000))
+    
+    # URLs de servicios para desarrollo local
+    AUTH_SERVICE_URL = f"http://localhost:{AUTH_SERVICE_PORT}"
+    USER_SERVICE_URL = f"http://localhost:{USER_SERVICE_PORT}"
+    TASK_SERVICE_URL = f"http://localhost:{TASK_SERVICE_PORT}"
     
     # CORS Configuration
     CORS_ORIGINS = [

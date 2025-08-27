@@ -71,17 +71,13 @@ limiter = Limiter(
     strategy="fixed-window"
 )
 
-# Configuración CORS con headers manuales para máxima compatibilidad
+# Configuración CORS centralizada usando la configuración del entorno
 print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
 print(f"🔍 [GATEWAY] Tipo de config: {type(config).__name__}")
 print(f"🔍 [GATEWAY] Archivo config: {config.__module__}")
 
-# Configuración CORS centralizada
-ALLOWED_ORIGINS = [
-    "https://microservicio-extraordinario.vercel.app",
-    "http://localhost:3000",
-    "http://localhost:5173"
-]
+# Usar la configuración del entorno, no hardcodear
+ALLOWED_ORIGINS = config.CORS_ORIGINS
 
 def is_origin_allowed(origin):
     """Verificar si el origin está permitido"""
@@ -116,9 +112,9 @@ def after_request(response):
 
 
 # URLs de los microservicios MongoDB
-AUTH_SERVICE_URL = f'http://localhost:{config.AUTH_SERVICE_PORT}'
-USER_SERVICE_URL = f'http://localhost:{config.USER_SERVICE_PORT}'
-TASK_SERVICE_URL = f'http://localhost:{config.TASK_SERVICE_PORT}'
+AUTH_SERVICE_URL = getattr(config, 'AUTH_SERVICE_URL', f'http://localhost:{config.AUTH_SERVICE_PORT}')
+USER_SERVICE_URL = getattr(config, 'USER_SERVICE_URL', f'http://localhost:{config.USER_SERVICE_PORT}')
+TASK_SERVICE_URL = getattr(config, 'TASK_SERVICE_URL', f'http://localhost:{config.TASK_SERVICE_PORT}')
 
 print(f"[GATEWAY] URLs de servicios MongoDB:")
 print(f"   Auth Service: {AUTH_SERVICE_URL}")
@@ -283,14 +279,8 @@ def ratelimit_handler(e):
         "retry_after": e.description if hasattr(e, 'description') else None
     }), 429
 
-# Manejo explícito de OPTIONS para todas las rutas
-@app.route('/', defaults={'path': ''}, methods=['OPTIONS'])
-@app.route('/<path:path>', methods=['OPTIONS'])
-def handle_preflight(path):
-    """Manejar peticiones preflight OPTIONS para todas las rutas"""
-    response = jsonify({'message': 'OK'})
-    response.headers.add('Access-Control-Max-Age', '3600')
-    return add_cors_headers(response)
+# CORS manejado por @app.before_request y @app.after_request
+# No se necesita manejo explícito de OPTIONS aquí
 
 @app.route('/auth/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @limiter.limit("30 per minute")  # Límite más estricto para autenticación

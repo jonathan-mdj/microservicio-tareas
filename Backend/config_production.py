@@ -23,9 +23,11 @@ class ProductionConfig:
     
     # Service Ports para Render
     PORT = int(os.environ.get('PORT', 10000))  # Render usa PORT
-    AUTH_SERVICE_PORT = 5001
-    USER_SERVICE_PORT = 5002
-    TASK_SERVICE_PORT = 5003
+    
+    # URLs de servicios para Render (no puertos locales)
+    AUTH_SERVICE_URL = "https://microservicio-auth.onrender.com"
+    USER_SERVICE_URL = "https://microservicio-user.onrender.com"
+    TASK_SERVICE_URL = "https://microservicio-task.onrender.com"
     
     # CORS Origins para producción
     CORS_ORIGINS = [
@@ -84,9 +86,9 @@ class ProductionConfig:
         """Obtener URLs de servicios para producción"""
         base_url = f"http://localhost:{cls.PORT}"
         return {
-            'auth_service': f"http://localhost:{cls.AUTH_SERVICE_PORT}",
-            'user_service': f"http://localhost:{cls.USER_SERVICE_PORT}",
-            'task_service': f"http://localhost:{cls.TASK_SERVICE_PORT}",
+            'auth_service': cls.AUTH_SERVICE_URL,
+            'user_service': cls.USER_SERVICE_URL,
+            'task_service': cls.TASK_SERVICE_URL,
             'api_gateway': base_url
         }
 

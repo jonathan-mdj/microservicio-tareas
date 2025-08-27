@@ -78,21 +78,24 @@ def start_all_services():
     """Iniciar todos los microservicios"""
     print("🔧 Iniciando microservicios...")
     
-    services = [
-        ('auth_service', 5001, 1),
-        ('user_service', 5002, 1),
-        ('task_service', 5003, 1)
-    ]
+    # Importar configuración de producción
+    try:
+        from config_production import production_config
+        print(f"✅ Usando configuración de producción: {production_config.__class__.__name__}")
+        print(f"🔗 URLs de servicios:")
+        print(f"   Auth: {production_config.AUTH_SERVICE_URL}")
+        print(f"   User: {production_config.USER_SERVICE_URL}")
+        print(f"   Task: {production_config.TASK_SERVICE_URL}")
+    except ImportError:
+        print("⚠️  No se pudo importar config_production, usando puertos por defecto")
+        production_config = None
     
-    processes = []
+    # En Render, los microservicios se ejecutan como servicios separados
+    # Solo iniciamos el API Gateway
+    print("ℹ️  En Render, los microservicios se ejecutan como servicios separados")
+    print("ℹ️  Solo se iniciará el API Gateway")
     
-    for service_name, port, workers in services:
-        process = start_service_with_gunicorn(service_name, port, workers)
-        if process:
-            processes.append((service_name, process))
-        time.sleep(3)  # Esperar entre servicios
-    
-    return processes
+    return []
 
 def start_api_gateway():
     """Iniciar API Gateway en el puerto principal"""
@@ -138,7 +141,7 @@ def main():
     signal.signal(signal.SIGTERM, signal_handler)
     signal.signal(signal.SIGINT, signal_handler)
     
-    print("🚀 INICIANDO MICROSERVICIOS EN RENDER")
+    print("🚀 INICIANDO API GATEWAY EN RENDER")
     print("=" * 50)
     
     # Verificar MongoDB Atlas
@@ -147,25 +150,10 @@ def main():
         print("❌ No se puede continuar sin conexión a MongoDB Atlas")
         sys.exit(1)
     
-    # Iniciar microservicios en background
-    print("\n🔧 Iniciando microservicios...")
-    processes = start_all_services()
-    
-    if not processes:
-        print("❌ No se pudo iniciar ningún microservicio")
-        sys.exit(1)
-    
-    # Dar tiempo a que los servicios inicien
-    print(f"\n⏳ Esperando a que {len(processes)} servicios inicien...")
-    time.sleep(15)
-    
-    # Verificar que los servicios estén funcionando
-    print("🔍 Verificando estado de servicios...")
-    for service_name, process in processes:
-        if process.poll() is None:  # Proceso aún ejecutándose
-            print(f"   ✅ {service_name}: Ejecutándose (PID: {process.pid})")
-        else:
-            print(f"   ❌ {service_name}: Terminado prematuramente")
+    # En Render, los microservicios se ejecutan como servicios separados
+    # Solo iniciamos el API Gateway
+    print("\nℹ️  En Render, los microservicios se ejecutan como servicios separados")
+    print("ℹ️  Solo se iniciará el API Gateway")
     
     # Iniciar API Gateway (proceso principal)
     print("\n🌐 Iniciando API Gateway...")
