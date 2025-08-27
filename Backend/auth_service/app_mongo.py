@@ -1,6 +1,5 @@
 # auth_service/app_mongo.py
 from flask import Flask, jsonify, request
-from flask_cors import CORS
 import bcrypt
 import os
 import pyotp
@@ -15,13 +14,7 @@ from config import config
 
 app = Flask(__name__)
 
-# Configuración CORS
-CORS(app, 
-     origins=config.CORS_ORIGINS,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
-     supports_credentials=True,
-     max_age=3600)
+
 
 print(f"[DB] Conectando a MongoDB: {config.MONGO_URI}")
 

@@ -1,6 +1,5 @@
 # task_service/app_mongo.py
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 from datetime import datetime
 import traceback
 from database_mongo import mongo_db
@@ -10,13 +9,7 @@ from bson import ObjectId
 app = Flask(__name__)
 app.config['SECRET_KEY'] = config.JWT_SECRET
 
-# Configuración CORS más robusta
-CORS(app, 
-     origins=config.CORS_ORIGINS,
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
-     supports_credentials=True,
-     max_age=3600)
+
 
 print(f"[DB] Conectando a MongoDB: {config.MONGO_URI}")
 
