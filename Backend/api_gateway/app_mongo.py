@@ -12,12 +12,14 @@ from datetime import datetime
 import time
 import jwt
 from logging.handlers import RotatingFileHandler
+
 # Importar configuración según el entorno
-import os
 if os.getenv('FLASK_ENV') == 'production':
     from config_production import production_config as config
+    print("🚀 [GATEWAY] Usando configuración de PRODUCCIÓN")
 else:
     from config import config
+    print("🔧 [GATEWAY] Usando configuración de DESARROLLO")
 
 app = Flask(__name__)
 
@@ -70,6 +72,7 @@ limiter = Limiter(
 )
 
 # Configuración CORS más específica y robusta
+print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
 CORS(app, 
      origins=config.CORS_ORIGINS,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -508,6 +511,40 @@ def get_logs_stats():
     except Exception as e:
         logger.error(f"Error obteniendo estadísticas de logs: {e}")
         return jsonify({"error": "Error interno del servidor"}), 500
+
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint para Render"""
+    try:
+        # Verificar configuración
+        print(f"🔍 [HEALTH] Verificando configuración...")
+        print(f"   FLASK_ENV: {os.getenv('FLASK_ENV')}")
+        print(f"   CORS Origins: {config.CORS_ORIGINS}")
+        
+        # Probar conexión a MongoDB
+        try:
+            from database_mongo_render import mongo_db
+            connected = mongo_db.connect()
+            mongodb_status = "connected" if connected else "disconnected"
+        except Exception as e:
+            mongodb_status = f"error: {str(e)}"
+        
+        return jsonify({
+            'status': 'healthy',
+            'message': 'API Gateway funcionando correctamente',
+            'environment': os.getenv('FLASK_ENV', 'unknown'),
+            'mongodb': mongodb_status,
+            'cors_origins': config.CORS_ORIGINS,
+            'timestamp': datetime.utcnow().isoformat()
+        }), 200
+        
+    except Exception as e:
+        print(f"❌ [HEALTH] Error en health check: {e}")
+        return jsonify({
+            'status': 'unhealthy',
+            'error': str(e),
+            'timestamp': datetime.utcnow().isoformat()
+        }), 500
 
 @app.route('/', methods=['GET'])
 def root():

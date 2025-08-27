@@ -42,6 +42,11 @@ def start_service_with_gunicorn(service_name, port, workers=1):
     try:
         print(f"🚀 Iniciando {service_name} en puerto {port}...")
         
+        # Preparar variables de entorno para el proceso
+        env = os.environ.copy()
+        env['FLASK_ENV'] = 'production'
+        env['DEBUG'] = 'false'
+        
         cmd = [
             'gunicorn',
             '--bind', f'0.0.0.0:{port}',
@@ -53,11 +58,12 @@ def start_service_with_gunicorn(service_name, port, workers=1):
             f'{service_name}.app_mongo:app'
         ]
         
-        # Iniciar proceso en background
+        # Iniciar proceso en background con variables de entorno
         process = subprocess.Popen(
             cmd,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
+            env=env,  # Pasar variables de entorno
             preexec_fn=os.setsid  # Crear nuevo grupo de procesos
         )
         
@@ -94,6 +100,11 @@ def start_api_gateway():
         port = int(os.environ.get('PORT', 10000))
         print(f"🌐 Iniciando API Gateway en puerto {port}...")
         
+        # Preparar variables de entorno para el proceso
+        env = os.environ.copy()
+        env['FLASK_ENV'] = 'production'
+        env['DEBUG'] = 'false'
+        
         cmd = [
             'gunicorn',
             '--bind', f'0.0.0.0:{port}',
@@ -111,9 +122,11 @@ def start_api_gateway():
         print(f"   URL: http://0.0.0.0:{port}")
         print(f"   Health Check: http://0.0.0.0:{port}/health")
         print("   Logs: stdout/stderr")
+        print(f"   FLASK_ENV: {env.get('FLASK_ENV')}")
+        print(f"   DEBUG: {env.get('DEBUG')}")
         
-        # Ejecutar API Gateway (proceso principal)
-        subprocess.run(cmd)
+        # Ejecutar API Gateway (proceso principal) con variables de entorno
+        subprocess.run(cmd, env=env)
         
     except Exception as e:
         print(f"❌ Error iniciando API Gateway: {e}")
