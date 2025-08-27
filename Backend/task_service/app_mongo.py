@@ -3,7 +3,14 @@ from flask import Flask, request, jsonify
 from datetime import datetime
 import traceback
 from database_mongo import mongo_db
-from config import config
+# Importar configuración según el entorno
+import os
+if os.getenv('FLASK_ENV') == 'production':
+    from config_production import production_config as config
+    print("🚀 [TASK] Usando configuración de PRODUCCIÓN")
+else:
+    from config import config
+    print("🔧 [TASK] Usando configuración de DESARROLLO")
 from bson import ObjectId
 
 app = Flask(__name__)

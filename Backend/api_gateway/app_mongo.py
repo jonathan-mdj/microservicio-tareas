@@ -217,7 +217,7 @@ def after_request(response):
     return log_api_response(response)
 
 def proxy_request(service_url, path):
-    """Función auxiliar para hacer proxy de requests"""
+    """Función auxiliar para hacer proxy de requests con retry automático"""
     url = f"{service_url}/{path}"
     
     headers = {}
@@ -225,49 +225,62 @@ def proxy_request(service_url, path):
         if key.lower() not in ['host', 'content-length', 'connection']:
             headers[key] = value
     
-    try:
-        # Agregar headers específicos para evitar problemas
-        if 'Content-Type' not in headers and request.is_json:
-            headers['Content-Type'] = 'application/json'
-        
-        # Rate limiting más estricto para operaciones de escritura
-        if request.method in ['POST', 'PUT', 'DELETE']:
-            # Verificar límites adicionales para operaciones críticas
-            pass
-        
-        resp = requests.request(
-            method=request.method,
-            url=url,
-            json=request.get_json() if request.is_json else None,
-            headers=headers,
-            timeout=30,
-            allow_redirects=False
-        )
-        
-        # Crear respuesta con headers CORS apropiados
+    # Implementar retry automático para servicios externos
+    max_retries = 3
+    retry_delay = 2  # segundos
+    
+    for attempt in range(max_retries):
         try:
-            response_data = resp.json()
-            response = jsonify(response_data)
-        except ValueError:
-            response = jsonify({"message": resp.text})
-        
-        response.status_code = resp.status_code
-        
-        # Usar función centralizada para CORS
-        return add_cors_headers(response)
+            # Agregar headers específicos para evitar problemas
+            if 'Content-Type' not in headers and request.is_json:
+                headers['Content-Type'] = 'application/json'
             
-    except ConnectionError:
-        error_response = jsonify({"error": "Servicio no disponible"})
-        error_response.status_code = 503
-        return add_cors_headers(error_response)
-    except Timeout:
-        error_response = jsonify({"error": "Timeout del servicio"})
-        error_response.status_code = 504
-        return add_cors_headers(error_response)
-    except RequestException as e:
-        error_response = jsonify({"error": f"Error en la solicitud: {str(e)}"})
-        error_response.status_code = 500
-        return add_cors_headers(error_response)
+            print(f"🔄 [PROXY] Intento {attempt + 1}/{max_retries} para {url}")
+            
+            resp = requests.request(
+                method=request.method,
+                url=url,
+                json=request.get_json() if request.is_json else None,
+                headers=headers,
+                timeout=120,  # Aumentar timeout para Render
+                allow_redirects=False
+            )
+            
+            # Si llegamos aquí, la petición fue exitosa
+            print(f"✅ [PROXY] Petición exitosa a {url}")
+            
+            # Crear respuesta con headers CORS apropiados
+            try:
+                response_data = resp.json()
+                response = jsonify(response_data)
+            except ValueError:
+                response = jsonify({"message": resp.text})
+            
+            response.status_code = resp.status_code
+            
+            # Usar función centralizada para CORS
+            return add_cors_headers(response)
+            
+        except (ConnectionError, Timeout, RequestException) as e:
+            print(f"❌ [PROXY] Intento {attempt + 1} falló: {type(e).__name__}")
+            
+            # Si es el último intento, devolver error
+            if attempt == max_retries - 1:
+                if isinstance(e, ConnectionError):
+                    error_response = jsonify({"error": "Servicio no disponible"})
+                    error_response.status_code = 503
+                elif isinstance(e, Timeout):
+                    error_response = jsonify({"error": "Timeout del servicio"})
+                    error_response.status_code = 504
+                else:
+                    error_response = jsonify({"error": f"Error en la solicitud: {str(e)}"})
+                    error_response.status_code = 500
+                
+                return add_cors_headers(error_response)
+            
+            # Esperar antes del siguiente intento
+            import time
+            time.sleep(retry_delay)
 
 # Manejo de errores para rate limiting
 @app.errorhandler(429)  # Too Many Requests
@@ -338,7 +351,33 @@ def info_proxy():
     """Proxy para información del sistema del Task Service MongoDB"""
     return proxy_request(TASK_SERVICE_URL, 'info')
 
-# Health check endpoint eliminado (duplicado) - se mantiene el de abajo
+# Health check endpoint para Render
+@app.route('/health', methods=['GET'])
+def health_check():
+    """Health check endpoint para Render"""
+    return jsonify({
+        "status": "healthy",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "API Gateway",
+        "version": "1.0.0"
+    }), 200
+
+# Root endpoint para verificar funcionamiento
+@app.route('/', methods=['GET'])
+def root():
+    """Root endpoint para verificar funcionamiento"""
+    return jsonify({
+        "message": "API Gateway funcionando correctamente",
+        "status": "operational",
+        "timestamp": datetime.utcnow().isoformat(),
+        "service": "API Gateway",
+        "endpoints": {
+            "health": "/health",
+            "auth": "/auth/*",
+            "user": "/user/*",
+            "task": "/task/*"
+        }
+    }), 200
 
 @app.route('/logs/stats', methods=['GET'])
 @limiter.limit("50 per minute")  # Límite moderado para estadísticas
