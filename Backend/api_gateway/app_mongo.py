@@ -14,9 +14,10 @@ import jwt
 from logging.handlers import RotatingFileHandler
 
 # Importar configuración según el entorno
-if os.getenv('FLASK_ENV') == 'production':
+if os.getenv('PORT') or os.getenv('FLASK_ENV') == 'production':
+    # En Render siempre usar producción
     from config_production import production_config as config
-    print("🚀 [GATEWAY] Usando configuración de PRODUCCIÓN")
+    print("🚀 [GATEWAY] FORZANDO configuración de PRODUCCIÓN (Render detectado)")
 else:
     from config import config
     print("🔧 [GATEWAY] Usando configuración de DESARROLLO")
@@ -73,6 +74,9 @@ limiter = Limiter(
 
 # Configuración CORS más específica y robusta
 print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
+print(f"🔍 [GATEWAY] Tipo de config: {type(config).__name__}")
+print(f"🔍 [GATEWAY] Archivo config: {config.__module__}")
+
 CORS(app, 
      origins=config.CORS_ORIGINS,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
