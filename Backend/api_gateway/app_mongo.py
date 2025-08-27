@@ -351,16 +351,7 @@ def info_proxy():
     """Proxy para información del sistema del Task Service MongoDB"""
     return proxy_request(TASK_SERVICE_URL, 'info')
 
-# Health check endpoint para Render
-@app.route('/health', methods=['GET'])
-def health_check():
-    """Health check endpoint para Render"""
-    return jsonify({
-        "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
-        "service": "API Gateway",
-        "version": "1.0.0"
-    }), 200
+# Health check endpoint para Render (definido más abajo)
 
 # Root endpoint para verificar funcionamiento
 @app.route('/', methods=['GET'])
@@ -509,7 +500,7 @@ def health_check():
         
         # Probar conexión a MongoDB
         try:
-            from database_mongo_render import mongo_db
+            from database_mongo import mongo_db
             connected = mongo_db.connect()
             mongodb_status = "connected" if connected else "disconnected"
         except Exception as e:
