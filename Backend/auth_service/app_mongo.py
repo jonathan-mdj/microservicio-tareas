@@ -267,12 +267,13 @@ def health():
     except:
         db_status = "DOWN"
     
-        return jsonify({
-            "status": "UP" if db_status == "UP" else "DEGRADED",
-            "service": "Auth Service (MongoDB)",
-            "database": db_status,
-            "port": os.environ.get('PORT', 'N/A')
-        }), 200
+    # Este return debe estar FUERA del try/except
+    return jsonify({
+        "status": "UP" if db_status == "UP" else "DEGRADED",
+        "service": "Auth Service (MongoDB)",
+        "database": db_status,
+        "port": os.environ.get('PORT', 'N/A')
+    }), 200
 
 @app.route('/users', methods=['GET', 'OPTIONS'])
 def get_users():
