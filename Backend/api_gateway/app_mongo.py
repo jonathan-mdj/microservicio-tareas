@@ -76,38 +76,42 @@ print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
 print(f"🔍 [GATEWAY] Tipo de config: {type(config).__name__}")
 print(f"🔍 [GATEWAY] Archivo config: {config.__module__}")
 
-# Configurar CORS manualmente para evitar problemas con Flask-CORS
+# Configuración CORS centralizada
+ALLOWED_ORIGINS = [
+    "https://microservicio-extraordinario.vercel.app",
+    "http://localhost:3000",
+    "http://localhost:5173"
+]
+
+def is_origin_allowed(origin):
+    """Verificar si el origin está permitido"""
+    return origin in ALLOWED_ORIGINS
+
+def add_cors_headers(response, origin=None):
+    """Agregar headers CORS de forma centralizada"""
+    if not origin:
+        origin = request.headers.get('Origin')
+    
+    if origin and is_origin_allowed(origin):
+        response.headers['Access-Control-Allow-Origin'] = origin
+    
+    response.headers['Access-Control-Allow-Headers'] = "Content-Type,Authorization,X-Requested-With"
+    response.headers['Access-Control-Allow-Methods'] = "GET,PUT,POST,DELETE,OPTIONS"
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
+    return response
+
 @app.before_request
 def handle_preflight():
     """Manejar preflight OPTIONS request"""
     if request.method == "OPTIONS":
         response = make_response()
-        response.headers.add("Access-Control-Allow-Origin", request.headers.get('Origin'))
-        response.headers.add('Access-Control-Allow-Headers', "*")
-        response.headers.add('Access-Control-Allow-Methods', "*")
-        response.headers.add('Access-Control-Allow-Credentials', "true")
-        return response
+        origin = request.headers.get('Origin')
+        return add_cors_headers(response, origin)
 
 @app.after_request
 def after_request(response):
     """Agregar headers CORS después de cada request"""
-    origin = request.headers.get('Origin')
-    
-    # Solo permitir orígenes específicos
-    allowed_origins = [
-        "https://microservicio-extraordinario.vercel.app",
-        "http://localhost:3000",
-        "http://localhost:5173"
-    ]
-    
-    if origin in allowed_origins:
-        response.headers.add('Access-Control-Allow-Origin', origin)
-    
-    response.headers.add('Access-Control-Allow-Headers', "Content-Type,Authorization,X-Requested-With")
-    response.headers.add('Access-Control-Allow-Methods', "GET,PUT,POST,DELETE,OPTIONS")
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
-    
-    return response
+    return add_cors_headers(response)
 
 
 
@@ -253,29 +257,21 @@ def proxy_request(service_url, path):
         
         response.status_code = resp.status_code
         
-        # Agregar headers CORS explícitamente
-        response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
-        
-        return response
+        # Usar función centralizada para CORS
+        return add_cors_headers(response)
             
     except ConnectionError:
         error_response = jsonify({"error": "Servicio no disponible"})
         error_response.status_code = 503
-        error_response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
-        return error_response
+        return add_cors_headers(error_response)
     except Timeout:
         error_response = jsonify({"error": "Timeout del servicio"})
         error_response.status_code = 504
-        error_response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
-        return error_response
+        return add_cors_headers(error_response)
     except RequestException as e:
         error_response = jsonify({"error": f"Error en la solicitud: {str(e)}"})
         error_response.status_code = 500
-        error_response.headers['Access-Control-Allow-Origin'] = 'http://localhost:4200'
-        return error_response
+        return add_cors_headers(error_response)
 
 # Manejo de errores para rate limiting
 @app.errorhandler(429)  # Too Many Requests
@@ -293,12 +289,8 @@ def ratelimit_handler(e):
 def handle_preflight(path):
     """Manejar peticiones preflight OPTIONS para todas las rutas"""
     response = jsonify({'message': 'OK'})
-    response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
-    response.headers.add('Access-Control-Allow-Headers', 'Content-Type', 'Authorization', 'X-Requested-With')
-    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
-    response.headers.add('Access-Control-Allow-Credentials', 'true')
     response.headers.add('Access-Control-Max-Age', '3600')
-    return response
+    return add_cors_headers(response)
 
 @app.route('/auth/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
 @limiter.limit("30 per minute")  # Límite más estricto para autenticación

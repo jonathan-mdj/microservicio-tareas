@@ -28,23 +28,13 @@ def check_password(hashed_password, user_password):
         hashed_password = hashed_password.encode('utf-8')
     return bcrypt.checkpw(user_password.encode('utf-8'), hashed_password)
 
-# Manejo de preflight OPTIONS
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify({'message': 'OK'})
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type', 'Authorization', 'X-Requested-With')
-        response.headers.add('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        response.headers.add('Access-Control-Max-Age', '3600')
-        return response
+# CORS manejado por API Gateway - no configurar aquí
 
 @app.route('/register', methods=['POST', 'OPTIONS'])
 def register():
     """Registrar nuevo usuario en MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         data = request.get_json()
@@ -142,7 +132,7 @@ def register():
 def login():
     """Autenticar usuario desde MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         data = request.get_json()
@@ -257,7 +247,7 @@ def login():
 def health():
     """Verificar estado del servicio"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     # Verificar conexión a MongoDB
     try:
@@ -281,7 +271,7 @@ def health():
 def get_users():
     """Obtener lista de usuarios desde MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         if not mongo_db.connect():

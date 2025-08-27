@@ -65,23 +65,13 @@ def convert_datetime_to_string(obj):
         return obj.isoformat()
     return str(obj) if obj is not None else None
 
-# Manejo de preflight OPTIONS
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify({'message': 'OK'})
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type', 'Authorization', 'X-Requested-With')
-        response.headers.add('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        response.headers.add('Access-Control-Max-Age', '3600')
-        return response
+# CORS manejado por API Gateway - no configurar aquí
 
-# Rutas de tareas (con CORS headers)
+# Rutas de tareas
 @app.route('/tasks', methods=['GET', 'OPTIONS'])
 def listar_tasks():
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         # Obtener usuario del header Authorization (simulado)
@@ -125,7 +115,7 @@ def listar_tasks():
 @app.route('/task', methods=['POST', 'OPTIONS'])
 def crear_task():
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         data = request.get_json()
@@ -209,7 +199,7 @@ def crear_task():
 @app.route('/task/<task_id>', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
 def task_operations(task_id):
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         # Por simplicidad, asumimos que el usuario es admin
@@ -332,7 +322,7 @@ def task_operations(task_id):
 @app.route('/tasks/status/<status>', methods=['GET', 'OPTIONS'])
 def tasks_by_status(status):
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         # Por simplicidad, asumimos que el usuario es admin
@@ -374,7 +364,7 @@ def tasks_by_status(status):
 @app.route('/info', methods=['GET', 'OPTIONS'])
 def info():
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     return jsonify({
         "service": "Task Management Service (MongoDB)",
@@ -386,7 +376,7 @@ def info():
 @app.route('/health', methods=['GET', 'OPTIONS'])
 def health():
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     # Verificar conexión a MongoDB
     try:

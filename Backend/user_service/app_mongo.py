@@ -23,23 +23,13 @@ def convert_datetime_to_string(obj):
         return obj.isoformat()
     return str(obj) if obj is not None else None
 
-# Manejo de preflight OPTIONS
-@app.before_request
-def handle_preflight():
-    if request.method == "OPTIONS":
-        response = jsonify({'message': 'OK'})
-        response.headers.add('Access-Control-Allow-Origin', 'http://localhost:4200')
-        response.headers.add('Access-Control-Allow-Headers', 'Content-Type', 'Authorization', 'X-Requested-With')
-        response.headers.add('Access-Control-Allow-Methods', 'GET', 'POST', 'PUT', 'DELETE', 'OPTIONS')
-        response.headers.add('Access-Control-Allow-Credentials', 'true')
-        response.headers.add('Access-Control-Max-Age', '3600')
-        return response
+# CORS manejado por API Gateway - no configurar aquí
 
 @app.route('/users', methods=['GET', 'OPTIONS'])
 def get_users():
     """Obtener lista de todos los usuarios desde MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         if not mongo_db.connect():
@@ -75,7 +65,7 @@ def get_users():
 def get_user(user_id):
     """Obtener un usuario específico por ID desde MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         if not mongo_db.connect():
@@ -115,7 +105,7 @@ def get_user(user_id):
 def create_user():
     """Crear un nuevo usuario en MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         data = request.get_json()
@@ -208,7 +198,7 @@ def create_user():
 def update_user(user_id):
     """Actualizar un usuario existente en MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         data = request.get_json()
@@ -302,7 +292,7 @@ def update_user(user_id):
 def delete_user(user_id):
     """Eliminar un usuario desde MongoDB"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     try:
         if not mongo_db.connect():
@@ -338,7 +328,7 @@ def delete_user(user_id):
 def health():
     """Verificar estado del servicio"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     # Verificar conexión a MongoDB
     try:
@@ -389,7 +379,7 @@ def get_roles():
 def root():
     """Información del servicio"""
     if request.method == 'OPTIONS':
-        return handle_preflight()
+        return jsonify({'message': 'OK'})
     
     return jsonify({
         "service": "User Service (MongoDB)",

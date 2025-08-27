@@ -1,6 +1,5 @@
 # task_service/app.py
 from flask import Flask, request, jsonify
-from flask_cors import CORS
 import mysql.connector
 from datetime import datetime
 from auth import generate_token, token_required, hash_password, check_password
@@ -13,13 +12,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '..', '.env'))
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('JWT_SECRET', 'supersecretkey')
 
-# Configuración CORS más robusta
-CORS(app, 
-     origins=["http://localhost:4200", "http://localhost:4000"],
-     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
-     supports_credentials=True,
-     max_age=3600)
+
 
 # Configuración de la base de datos
 DB_CONFIG = {
