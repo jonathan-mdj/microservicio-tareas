@@ -1,5 +1,5 @@
 # api_gateway/app_mongo.py
-from flask import Flask, jsonify, request, g
+from flask import Flask, jsonify, request, g, make_response
 import requests
 from flask_cors import CORS
 from flask_limiter import Limiter
@@ -77,6 +77,47 @@ print(f"🌐 [GATEWAY] Configurando CORS con origins: {config.CORS_ORIGINS}")
 print(f"🔍 [GATEWAY] Tipo de config: {type(config).__name__}")
 print(f"🔍 [GATEWAY] Archivo config: {config.__module__}")
 
+# Configurar CORS manualmente para asegurar que funcione
+@app.before_request
+def handle_cors():
+    """Manejar CORS manualmente antes de cada request"""
+    origin = request.headers.get('Origin')
+    
+    # Log para debug
+    print(f"🔍 [CORS] Request desde: {origin}")
+    print(f"🔍 [CORS] Método: {request.method}")
+    print(f"🔍 [CORS] Endpoint: {request.endpoint}")
+    
+    # Verificar si el origen está permitido
+    allowed_origins = config.CORS_ORIGINS
+    is_allowed = False
+    
+    for allowed_origin in allowed_origins:
+        if allowed_origin == '*' or allowed_origin == origin:
+            is_allowed = True
+            break
+        elif allowed_origin.startswith('https://*.') and origin and origin.startswith(allowed_origin[8:]):
+            is_allowed = True
+            break
+    
+    print(f"🔍 [CORS] Origen permitido: {is_allowed}")
+    
+    if is_allowed:
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, X-Requested-With'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Max-Age'] = '3600'
+        
+        print(f"🔍 [CORS] Headers CORS configurados para: {origin}")
+        
+        if request.method == 'OPTIONS':
+            return response
+    
+    return None
+
+# Configurar CORS con Flask-CORS como respaldo
 CORS(app, 
      origins=config.CORS_ORIGINS,
      methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
