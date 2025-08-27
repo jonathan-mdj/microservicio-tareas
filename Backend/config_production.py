@@ -30,7 +30,8 @@ class ProductionConfig:
     # CORS Origins para producción
     CORS_ORIGINS = [
         'http://localhost:4200',  # Desarrollo local
-        'https://microservicio-tareas-kviu.vercel.app',  # Tu dominio real de Vercel
+        'https://microservicio-tareas-kviu.vercel.app',  # Dominio anterior de Vercel
+        'https://microservicio-tareas-sofv.vercel.app',  # Nuevo dominio de Vercel
         'https://*.vercel.app',  # Permitir cualquier subdominio de Vercel
         'https://*.onrender.com'  # Permitir cualquier subdominio de Render
     ]
