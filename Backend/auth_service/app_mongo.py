@@ -275,6 +275,25 @@ def health():
         "port": os.environ.get('PORT', 'N/A')
     }), 200
 
+@app.route('/', methods=['GET', 'OPTIONS'])
+def root():
+    """Información del servicio"""
+    if request.method == 'OPTIONS':
+        return jsonify({'message': 'OK'})
+    
+    return jsonify({
+        "service": "Auth Service (MongoDB)",
+        "version": "1.0.0",
+        "port": os.environ.get('PORT', 'N/A'),
+        "endpoints": {
+            "register": "POST /auth/register",
+            "login": "POST /auth/login",
+            "health": "GET /health",
+            "users": "GET /users"
+        },
+        "database": "MongoDB task_management"
+    }), 200
+
 @app.route('/users', methods=['GET', 'OPTIONS'])
 def get_users():
     """Obtener lista de usuarios desde MongoDB"""

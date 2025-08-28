@@ -368,6 +368,27 @@ def tasks_by_status(status):
         print(f"Error obteniendo tareas por status: {e}")
         return jsonify({"error": f"Error obteniendo tareas: {str(e)}"}), 500
 
+@app.route('/', methods=['GET', 'OPTIONS'])
+def root():
+    """Información del servicio"""
+    if request.method == 'OPTIONS':
+        return jsonify({'message': 'OK'})
+    
+    return jsonify({
+        "service": "Task Service (MongoDB)",
+        "version": "1.0.0",
+        "port": os.environ.get('PORT', 'N/A'),
+        "endpoints": {
+            "list_tasks": "GET /tasks",
+            "create_task": "POST /task",
+            "task_operations": "GET/PUT/DELETE /task/{id}",
+            "tasks_by_status": "GET /tasks/status/{status}",
+            "info": "GET /info",
+            "health": "GET /health"
+        },
+        "database": "MongoDB task_management"
+    }), 200
+
 @app.route('/info', methods=['GET', 'OPTIONS'])
 def info():
     if request.method == 'OPTIONS':
