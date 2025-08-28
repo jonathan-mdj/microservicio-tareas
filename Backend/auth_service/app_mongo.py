@@ -306,4 +306,4 @@ def get_users():
         return jsonify({"error": "Error interno del servidor"}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=config.AUTH_SERVICE_PORT, debug=config.DEBUG)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)), debug=config.DEBUG)

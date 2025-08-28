@@ -408,7 +408,7 @@ if __name__ == '__main__':
     print("=" * 50)
     print("INICIANDO TASK SERVICE (MongoDB)")
     print("=" * 50)
-    print(f"Task Service URL: http://localhost:{config.TASK_SERVICE_PORT}")
+    print(f"Task Service URL: http://localhost:{os.environ.get('PORT', '10000')}")
     print("Base de datos: MongoDB task_management")
     print(f"CORS configurado para: {config.CORS_ORIGINS}")
     print("=" * 50)
@@ -421,4 +421,4 @@ if __name__ == '__main__':
         print("Verifica la configuración de la base de datos")
     
     print("=" * 50)
-    app.run(host='0.0.0.0', port=config.TASK_SERVICE_PORT, debug=config.DEBUG)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 10000)), debug=config.DEBUG)

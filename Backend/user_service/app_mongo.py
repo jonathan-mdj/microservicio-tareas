@@ -392,7 +392,7 @@ def root():
     return jsonify({
         "service": "User Service (MongoDB)",
         "version": "1.0.0",
-        "port": config.USER_SERVICE_PORT,
+        "port": os.environ.get('PORT', 'N/A'),
         "endpoints": {
             "list_users": "GET /users",
             "get_user": "GET /users/{id}",
@@ -409,7 +409,7 @@ if __name__ == '__main__':
     print("=" * 50)
     print("INICIANDO USER SERVICE (MongoDB)")
     print("=" * 50)
-    print(f"User Service URL: http://localhost:{config.USER_SERVICE_PORT}")
+    print(f"User Service URL: http://localhost:{os.environ.get('PORT', '10000')}")
     print("Base de datos: MongoDB task_management")
     print(f"CORS configurado para: {config.CORS_ORIGINS}")
     print("=" * 50)
