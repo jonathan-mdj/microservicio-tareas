@@ -72,7 +72,16 @@ def convert_datetime_to_string(obj):
         return obj.isoformat()
     return str(obj) if obj is not None else None
 
-# CORS manejado por API Gateway - no configurar aquí
+# Configuración CORS para producción
+from flask_cors import CORS
+
+# Configurar CORS para aceptar peticiones desde Vercel
+CORS(app, 
+     origins=["http://localhost:4200", "http://localhost:4000", "https://microservicio-extraordinario.vercel.app"],
+     methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+     allow_headers=["Content-Type", "Authorization", "X-Requested-With"],
+     supports_credentials=True,
+     max_age=3600)
 
 # Rutas de tareas
 @app.route('/tasks', methods=['GET', 'OPTIONS'])
